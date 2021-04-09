@@ -1,18 +1,45 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <header>Timetable</header>
+  <Minimalistic v-if="settings.preferredView === 'minimalistic'"></Minimalistic>
+  <div class="compact" v-else>
+    Compact is not ready! Check on it in few days...
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import { defineComponent, inject } from "vue";
+import Minimalistic from "../components/home/minimalistic/index.vue";
 
 export default defineComponent({
-  name: "Home",
   components: {
-    HelloWorld,
+    Minimalistic,
+  },
+  setup() {
+    const settings = inject("settings");
+    return { settings };
   },
 });
 </script>
+
+<style scoped>
+header {
+  width: 100%;
+  height: 150px;
+  text-align: center;
+  font-size: 45px;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.compact {
+  height: 100px;
+  line-height: 100px;
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
+}
+</style>

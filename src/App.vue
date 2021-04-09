@@ -1,30 +1,72 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view />
+  <ThemeProvider @change="setSettings">
+    <div :style="theme" class="router-body">
+      <router-view />
+    </div>
+    <Footer />
+  </ThemeProvider>
 </template>
 
+<script lang="ts">
+import { computed, defineComponent, reactive } from "vue";
+import Footer from "./components/shared/Footer.vue";
+import ThemeProvider from "./contexts/ThemeProvider.vue";
+import { defaultSettings, Settings } from "./models/settings";
+
+export default defineComponent({
+  name: "App",
+  components: { Footer, ThemeProvider },
+  setup() {
+    const settings = reactive({ ...defaultSettings });
+    const setSettings = (newSettings: Settings) => {
+      settings.mainColor = newSettings.mainColor;
+      settings.secondaryColor = newSettings.secondaryColor;
+      settings.accentColor = newSettings.accentColor;
+      settings.fontColor = newSettings.fontColor;
+      settings.preferredView = newSettings.preferredView;
+      settings.angInf = newSettings.angInf;
+      settings.wf = newSettings.wf;
+      settings.lang = newSettings.lang;
+    };
+    // const theme = reactive({
+    //   color: settings.fontColor,
+    //   backgroundColor: settings.mainColor,
+    // });
+
+    // watch(settings, (newSettings) => {
+    //   theme.color = newSettings.fontColor;
+    //   theme.backgroundColor = newSettings.mainColor;
+    // });
+    const theme = computed(() => ({
+      color: settings.fontColor,
+      backgroundColor: settings.mainColor,
+    }));
+
+    return { settings, setSettings, theme };
+  },
+});
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+@font-face {
+  font-family: "Raleway";
+  src: url(./assets/raleway.ttf);
+}
+
+body {
+  margin: 0;
+  font-family: "Raleway", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  background-color: #000;
+  color: white;
 }
 
-#nav {
-  padding: 30px;
+.router-body {
+  min-height: calc(100vh - 80px);
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+::-webkit-scrollbar {
+  display: none;
 }
 </style>
