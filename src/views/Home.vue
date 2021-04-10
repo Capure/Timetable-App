@@ -1,18 +1,18 @@
 <template>
   <header>Timetable</header>
   <Minimalistic v-if="settings.preferredView === 'minimalistic'"></Minimalistic>
-  <div class="compact" v-else>
-    Compact is not ready! Check on it in few days...
-  </div>
+  <Compact v-else />
 </template>
 
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import Minimalistic from "../components/home/minimalistic/index.vue";
+import Compact from "@/components/home/compact/Compact.vue";
 
 export default defineComponent({
   components: {
     Minimalistic,
+    Compact,
   },
   setup() {
     const settings = inject("settings");
