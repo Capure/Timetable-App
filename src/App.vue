@@ -28,15 +28,6 @@ export default defineComponent({
       settings.wf = newSettings.wf;
       settings.lang = newSettings.lang;
     };
-    // const theme = reactive({
-    //   color: settings.fontColor,
-    //   backgroundColor: settings.mainColor,
-    // });
-
-    // watch(settings, (newSettings) => {
-    //   theme.color = newSettings.fontColor;
-    //   theme.backgroundColor = newSettings.mainColor;
-    // });
     const theme = computed(() => ({
       color: settings.fontColor,
       backgroundColor: settings.mainColor,

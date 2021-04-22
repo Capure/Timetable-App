@@ -60,7 +60,7 @@ import { defaultSettings, Settings } from "@/models/settings";
 import { computed, defineComponent, inject, ref } from "vue";
 export default defineComponent({
   name: "ColorPicker",
-  setup(props, ctx) {
+  setup() {
     const settings: Settings | undefined = inject("settings");
 
     const mainCss = computed(() => ({

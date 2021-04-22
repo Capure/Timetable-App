@@ -59,7 +59,7 @@ export default defineComponent({
         current.value =
           timetableData[getDayByIdx(currentIdx.value) as keyof TimetableData];
         setInterval(() => {
-          markCurrent(data);
+          markCurrent(timetableData);
         }, 5000);
       })
     );

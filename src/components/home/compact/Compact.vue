@@ -40,7 +40,7 @@ export default defineComponent({
         const timetableData = reactive(data);
         lessons.value = timetableData;
         setInterval(() => {
-          markCurrent(data);
+          markCurrent(timetableData);
         }, 5000);
       })
     );

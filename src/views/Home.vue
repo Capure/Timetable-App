@@ -1,6 +1,6 @@
 <template>
   <header>Timetable</header>
-  <Minimalistic v-if="settings.preferredView === 'minimalistic'"></Minimalistic>
+  <Minimalistic v-if="settings.preferredView === 'minimalistic'" />
   <Compact v-else />
 </template>
 
