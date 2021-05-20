@@ -33,9 +33,40 @@ export const filterLessons = (
   data.sunday = filteredData[6];
 };
 
+interface LessonCache {
+  lessons: Array<LessonDTO[]>;
+}
+
+const cacheLessons = (data: Array<LessonDTO[]>): void => {
+  localStorage.setItem("lessons", JSON.stringify({ lessons: data }));
+};
+
+const getLessonsFromCache = async (): Promise<Array<LessonDTO[]> | null> => {
+  const prev = localStorage.getItem("lessons");
+  if (!prev) {
+    return null;
+  }
+  try {
+    const lessonCache: LessonCache = JSON.parse(prev);
+    return lessonCache.lessons;
+  } catch {
+    return null;
+  }
+};
+
 export const getLessons = async (): Promise<TimetableData> => {
-  const res = await fetch("https://timetable-api.vloapp.pl/");
-  const data: Array<LessonDTO[]> = await res.json();
+  const cache = await getLessonsFromCache();
+  let data: Array<LessonDTO[]>;
+  if (!cache) {
+    const res = await fetch("https://timetable-api.vloapp.pl/");
+    data = await res.json();
+    cacheLessons(data);
+  } else {
+    data = cache;
+    fetch("https://timetable-api.vloapp.pl/")
+      .then((res) => res.json())
+      .then(cacheLessons);
+  }
   data.forEach((day) => day.forEach((lesson) => (lesson.current = false)));
   const days: TimetableData = {
     monday: data[0],
