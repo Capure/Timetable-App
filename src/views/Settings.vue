@@ -45,6 +45,7 @@ export default {
     ViewMode,
     ColorPicker,
   },
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   setup() {
     const settings = inject("settings");
     return {

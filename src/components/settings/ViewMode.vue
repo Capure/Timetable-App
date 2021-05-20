@@ -10,7 +10,7 @@ import { Settings } from "@/models/settings";
 import { computed, defineComponent, inject, ref } from "vue";
 export default defineComponent({
   name: "ViewMode",
-  setup(props, ctx) {
+  setup() {
     const settings: Settings | undefined = inject("settings");
     const current = ref(settings?.preferredView);
 

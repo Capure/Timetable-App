@@ -57,7 +57,7 @@
 
 <script lang="ts">
 import { defaultSettings, Settings } from "@/models/settings";
-import { computed, defineComponent, inject, ref } from "vue";
+import { computed, defineComponent, inject } from "vue";
 export default defineComponent({
   name: "ColorPicker",
   setup() {
