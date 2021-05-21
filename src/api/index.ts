@@ -39,6 +39,7 @@ interface LessonCache {
 
 const cacheLessons = (data: Array<LessonDTO[]>): void => {
   localStorage.setItem("lessons", JSON.stringify({ lessons: data }));
+  localStorage.setItem("lastFetch", new Date().getTime().toString());
 };
 
 const getLessonsFromCache = async (): Promise<Array<LessonDTO[]> | null> => {
