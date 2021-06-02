@@ -72,6 +72,11 @@ export default defineComponent({
 .lesson-room {
   position: absolute;
   right: 10px;
-  top: 20px;
+  top: 0px;
+  font-size: 40px;
+  font-weight: 700;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  line-height: 140px;
 }
 </style>
