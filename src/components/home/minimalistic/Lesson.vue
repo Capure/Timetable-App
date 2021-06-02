@@ -75,7 +75,7 @@ export default defineComponent({
   top: 0px;
   bottom: 0px;
   width: 70px;
-  font-size: 35px;
+  font-size: 28px;
   font-weight: 700;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
