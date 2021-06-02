@@ -74,12 +74,13 @@ export default defineComponent({
   right: 10px;
   top: 0px;
   bottom: 0px;
+  width: 70px;
   font-size: 35px;
   font-weight: 700;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 </style>
