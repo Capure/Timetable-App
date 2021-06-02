@@ -71,7 +71,7 @@ export default defineComponent({
 
 .lesson-room {
   position: absolute;
-  right: 10px;
+  right: 0px;
   top: 0px;
   bottom: 0px;
   width: 70px;
