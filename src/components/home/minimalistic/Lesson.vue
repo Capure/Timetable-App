@@ -7,6 +7,7 @@
       <div class="lesson-time">
         {{ time }}
       </div>
+      <div class="lesson-room">{{room}}</div>
     </div>
   </div>
 </template>
@@ -19,6 +20,7 @@ export default defineComponent({
   props: {
     name: String,
     time: String,
+    room: String,
     current: Boolean,
   },
   setup(props) {
@@ -52,6 +54,7 @@ export default defineComponent({
   flex-direction: column;
   justify-content: space-evenly;
   align-items: flex-start;
+  position: relative;
 }
 
 .lesson-name {
@@ -64,5 +67,11 @@ export default defineComponent({
   font-weight: 500;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.lesson-room {
+  position: absolute;
+  right: 10px;
+  top: 20px;
 }
 </style>
