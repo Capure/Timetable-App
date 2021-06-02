@@ -13,5 +13,9 @@ export interface LessonDTO {
     current?: boolean,
     distribution?: TeamVirtual,
     change?: string,
+    room?: {
+        id: number,
+        code: string
+    },
     timestamp?: number,
 }
