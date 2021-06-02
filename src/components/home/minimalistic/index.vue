@@ -8,7 +8,7 @@
         :key="idx"
         :name="lesson.name.length < 16 ? lesson.name : lesson.short"
         :time="lesson.time"
-        :room="lesson.room.code"
+        :room="lesson.room ? lesson.room.code : ' '"
         :current="lesson.current"
       />
     </div>
