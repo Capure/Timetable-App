@@ -71,7 +71,7 @@ export default defineComponent({
 
 .lesson-room {
   position: absolute;
-  right: 0px;
+  right: 10px;
   top: 0px;
   bottom: 0px;
   width: 70px;
@@ -80,7 +80,7 @@ export default defineComponent({
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   display: flex;
-  justify-content: flex-start;
+  justify-content: justify-center;
   align-items: center;
 }
 </style>
