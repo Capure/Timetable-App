@@ -22,12 +22,17 @@ export default defineComponent({
     time: String,
     room: String,
     current: Boolean,
+    sub: Boolean,
   },
   setup(props) {
     const settings: Settings | undefined = inject("settings");
     const mainCss = computed(() => ({
       "--bg-color": props.current
-        ? settings?.accentColor
+        ? props.sub
+          ? `${settings?.accentColor}99`
+          : settings?.accentColor
+        : props.sub
+        ? `${settings?.secondaryColor}99`
         : settings?.secondaryColor,
     }));
     return { mainCss };
