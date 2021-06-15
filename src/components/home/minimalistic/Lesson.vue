@@ -7,7 +7,7 @@
       <div class="lesson-time">
         {{ time }}
       </div>
-      <div class="lesson-room">{{room}}</div>
+      <div class="lesson-room">{{ room }}</div>
     </div>
   </div>
 </template>
@@ -82,5 +82,13 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media (max-width: 360px) {
+  .lesson-room {
+    font-size: 25px;
+    width: 40px;
+    right: 5px;
+  }
 }
 </style>
