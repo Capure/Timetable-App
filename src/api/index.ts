@@ -1,6 +1,11 @@
 import { DAYS } from "@/consts";
 import { LessonDTO } from "@/models/lesson";
 import { TimetableData } from "@/models/timetableData";
+import ApolloClient, { gql } from "apollo-boost";
+
+const client = new ApolloClient({
+  uri: "https://timetable-api.vloapp.pl/graphql",
+});
 
 export const getToday = (): number => {
   const today = new Date().getDay();
@@ -18,10 +23,10 @@ export const filterLessons = (
   const filteredData = Object.keys(data).map((key) =>
     data[key as keyof TimetableData].filter(
       (lesson) =>
-        lesson.distribution === undefined ||
-        lesson.distribution.shortcut === wf ||
-        lesson.distribution.shortcut === lang ||
-        lesson.distribution.shortcut === angInf
+        lesson.distribution === null ||
+        lesson.distribution!.shortcut === wf ||
+        lesson.distribution!.shortcut === lang ||
+        lesson.distribution!.shortcut === angInf
     )
   );
   data.monday = filteredData[0];
@@ -34,22 +39,22 @@ export const filterLessons = (
 };
 
 interface LessonCache {
-  lessons: Array<LessonDTO[]>;
+  data: TimetableData;
 }
 
-const cacheLessons = (data: Array<LessonDTO[]>): void => {
-  localStorage.setItem("lessons", JSON.stringify({ lessons: data }));
+const cacheLessons = (data: TimetableData): void => {
+  localStorage.setItem("data", JSON.stringify({ data }));
   localStorage.setItem("lastFetch", new Date().getTime().toString());
 };
 
-const getLessonsFromCache = async (): Promise<Array<LessonDTO[]> | null> => {
-  const prev = localStorage.getItem("lessons");
+const getLessonsFromCache = async (): Promise<TimetableData | null> => {
+  const prev = localStorage.getItem("data");
   if (!prev) {
     return null;
   }
   try {
     const lessonCache: LessonCache = JSON.parse(prev);
-    return lessonCache.lessons;
+    return lessonCache.data;
   } catch {
     return null;
   }
@@ -57,28 +62,133 @@ const getLessonsFromCache = async (): Promise<Array<LessonDTO[]> | null> => {
 
 export const getLessons = async (): Promise<TimetableData> => {
   const cache = await getLessonsFromCache();
-  let data: Array<LessonDTO[]>;
+  let data: TimetableData;
+  const query = gql`
+    query {
+      monday {
+        time
+        name
+        short
+        distribution {
+          shortcut
+        }
+        change {
+          Type
+        }
+        room {
+          code
+        }
+        timestamp
+      }
+      tuesday {
+        time
+        name
+        short
+        distribution {
+          shortcut
+        }
+        change {
+          Type
+        }
+        room {
+          code
+        }
+        timestamp
+      }
+      wednesday {
+        time
+        name
+        short
+        distribution {
+          shortcut
+        }
+        change {
+          Type
+        }
+        room {
+          code
+        }
+        timestamp
+      }
+      thirsday {
+        time
+        name
+        short
+        distribution {
+          shortcut
+        }
+        change {
+          Type
+        }
+        room {
+          code
+        }
+        timestamp
+      }
+      friday {
+        time
+        name
+        short
+        distribution {
+          shortcut
+        }
+        change {
+          Type
+        }
+        room {
+          code
+        }
+        timestamp
+      }
+      saturday {
+        time
+        name
+        short
+        distribution {
+          shortcut
+        }
+        change {
+          Type
+        }
+        room {
+          code
+        }
+        timestamp
+      }
+      sunday {
+        time
+        name
+        short
+        distribution {
+          shortcut
+        }
+        change {
+          Type
+        }
+        room {
+          code
+        }
+        timestamp
+      }
+    }
+  `;
   if (!cache) {
-    const res = await fetch("https://timetable-api.vloapp.pl/");
-    data = await res.json();
+    data = (await client.query({ query })).data;
     cacheLessons(data);
   } else {
     data = cache;
-    fetch("https://timetable-api.vloapp.pl/")
-      .then((res) => res.json())
+    client
+      .query({ query })
+      .then((data) => data.data)
       .then(cacheLessons);
   }
-  data.forEach((day) => day.forEach((lesson) => (lesson.current = false)));
-  const days: TimetableData = {
-    monday: data[0],
-    tuesday: data[1],
-    wednesday: data[2],
-    thursday: data[3],
-    friday: data[4],
-    saturday: data[5],
-    sunday: data[6],
-  };
-  return days;
+  Object.keys(data).forEach((key) =>
+    data[key as keyof TimetableData].forEach(
+      (lesson) => (lesson.current = false)
+    )
+  );
+
+  return data;
 };
 
 export const markCurrent = (data: TimetableData): void => {

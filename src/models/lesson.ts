@@ -1,21 +1,18 @@
-interface TeamVirtual {
-    id: number;
-    key: string;
-    shortcut: string;
-    name: string;
-    partType: string;
+interface Distribution {
+  shortcut: string;
 }
 
 export interface LessonDTO {
-    time: string,
-    name: string,
-    short: string,
-    current?: boolean,
-    distribution?: TeamVirtual,
-    change?: string,
-    room?: {
-        id: number,
-        code: string
-    },
-    timestamp?: number,
+  time: string;
+  name: string;
+  short: string;
+  current?: boolean;
+  distribution?: Distribution;
+  change?: {
+    Type: number;
+  };
+  room?: {
+    code: string;
+  };
+  timestamp?: string;
 }
