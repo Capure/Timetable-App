@@ -118,6 +118,12 @@ export default defineComponent({
   user-select: none;
 }
 
+@media (max-width: 512px) {
+  .no-lessons {
+    margin-top: 60px;
+  }
+}
+
 .loader {
   background-color: var(--font-color);
   height: 40px;

@@ -50,6 +50,13 @@ export default defineComponent({
   user-select: none;
 }
 
+@media (max-width: 512px) {
+  .lesson-main {
+    height: 80px;
+    width: 100%;
+  }
+}
+
 .lesson-content {
   width: calc(100% - 40px);
   margin-left: 20px;
@@ -72,6 +79,21 @@ export default defineComponent({
   font-weight: 500;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+@media (max-width: 512px) {
+  .lesson-content {
+    height: calc(100% - 30px);
+    margin-top: 15px;
+  }
+
+  .lesson-name {
+    font-size: 18px;
+  }
+
+  .lesson-time {
+    font-size: 16px;
+  }
 }
 
 .lesson-room {

@@ -65,6 +65,12 @@ export default defineComponent({
   color: var(--font-color);
 }
 
+@media (max-width: 512px) {
+  .main {
+    height: 70px;
+  }
+}
+
 .switcher {
   height: 50px;
   width: 250px;

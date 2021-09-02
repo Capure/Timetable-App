@@ -35,6 +35,13 @@ header {
   font-weight: 700;
 }
 
+@media (max-width: 512px) {
+  header {
+    font-size: 38px;
+    height: 110px;
+  }
+}
+
 .compact {
   height: 100px;
   line-height: 100px;
