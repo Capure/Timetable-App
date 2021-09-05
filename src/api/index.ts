@@ -1,11 +1,6 @@
 import { DAYS } from "@/consts";
 import { LessonDTO } from "@/models/lesson";
 import { TimetableData } from "@/models/timetableData";
-import ApolloClient, { gql } from "apollo-boost";
-
-const client = new ApolloClient({
-  uri: "https://timetable-api.vloapp.pl/graphql",
-});
 
 export const getToday = (): number => {
   const today = new Date().getDay();
@@ -23,10 +18,10 @@ export const filterLessons = (
   const filteredData = Object.keys(data).map((key) =>
     data[key as keyof TimetableData].filter(
       (lesson) =>
-        lesson.distribution === null ||
-        lesson.distribution!.shortcut === wf ||
-        lesson.distribution!.shortcut === lang ||
-        lesson.distribution!.shortcut === angInf
+        lesson.distribution === undefined ||
+        lesson.distribution.shortcut === wf ||
+        lesson.distribution.shortcut === lang ||
+        lesson.distribution.shortcut === angInf
     )
   );
   data.monday = filteredData[0];
@@ -38,157 +33,69 @@ export const filterLessons = (
   data.sunday = filteredData[6];
 };
 
-interface LessonCache {
-  data: TimetableData;
-}
+type LessonCache = Record<number, Array<LessonDTO[]>>;
 
-const cacheLessons = (data: TimetableData): void => {
-  localStorage.setItem("data", JSON.stringify({ data }));
+const cacheLessons = (data: Array<LessonDTO[]>, weekStart: number): void => {
+  let newCache: Record<number, Array<LessonDTO[]>> = {};
+  newCache[weekStart] = data;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let prev: any = localStorage.getItem("timetable");
+  if (prev) {
+    prev = JSON.parse(prev);
+    newCache = { ...prev, ...newCache };
+  }
+  localStorage.setItem("timetable", JSON.stringify(newCache));
   localStorage.setItem("lastFetch", new Date().getTime().toString());
 };
 
-const getLessonsFromCache = async (): Promise<TimetableData | null> => {
-  const prev = localStorage.getItem("data");
+const getLessonsFromCache = async (
+  weekStart: number
+): Promise<Array<LessonDTO[]> | null> => {
+  const prev = localStorage.getItem("timetable");
   if (!prev) {
     return null;
   }
   try {
     const lessonCache: LessonCache = JSON.parse(prev);
-    return lessonCache.data;
+    const cached = lessonCache[weekStart];
+    if (!cached) {
+      throw Error("No entry for this week.");
+    }
+    return cached;
   } catch {
     return null;
   }
 };
 
-export const getLessons = async (): Promise<TimetableData> => {
-  const cache = await getLessonsFromCache();
-  let data: TimetableData;
-  const query = gql`
-    query {
-      monday {
-        time
-        name
-        short
-        distribution {
-          shortcut
-        }
-        change {
-          Type
-        }
-        room {
-          code
-        }
-        timestamp
-      }
-      tuesday {
-        time
-        name
-        short
-        distribution {
-          shortcut
-        }
-        change {
-          Type
-        }
-        room {
-          code
-        }
-        timestamp
-      }
-      wednesday {
-        time
-        name
-        short
-        distribution {
-          shortcut
-        }
-        change {
-          Type
-        }
-        room {
-          code
-        }
-        timestamp
-      }
-      thirsday {
-        time
-        name
-        short
-        distribution {
-          shortcut
-        }
-        change {
-          Type
-        }
-        room {
-          code
-        }
-        timestamp
-      }
-      friday {
-        time
-        name
-        short
-        distribution {
-          shortcut
-        }
-        change {
-          Type
-        }
-        room {
-          code
-        }
-        timestamp
-      }
-      saturday {
-        time
-        name
-        short
-        distribution {
-          shortcut
-        }
-        change {
-          Type
-        }
-        room {
-          code
-        }
-        timestamp
-      }
-      sunday {
-        time
-        name
-        short
-        distribution {
-          shortcut
-        }
-        change {
-          Type
-        }
-        room {
-          code
-        }
-        timestamp
-      }
-    }
-  `;
+export const getLessons = async (
+  weekStart: number,
+  offset: number
+): Promise<TimetableData> => {
+  const cache = await getLessonsFromCache(weekStart);
+  let data: Array<LessonDTO[]>;
   if (!cache) {
-    data = (await client.query({ query })).data;
-    cacheLessons(data);
+    const res = await fetch(
+      `https://timetable-api.vloapp.pl/?offset=${offset}`
+    );
+    data = await res.json();
+    cacheLessons(data, weekStart);
   } else {
     data = cache;
-    client
-      .query({ query })
-      .then((data) => data.data)
-      .then(cacheLessons);
+    fetch(`https://timetable-api.vloapp.pl/?offset=${offset}`)
+      .then((res) => res.json())
+      .then((data) => cacheLessons(data, weekStart));
   }
-  Object.keys(data).forEach((key) =>
-    data[key as keyof TimetableData].forEach(
-      (lesson) => (lesson.current = false)
-    )
-  );
-
-  return data;
+  data.forEach((day) => day.forEach((lesson) => (lesson.current = false)));
+  const days: TimetableData = {
+    monday: data[0],
+    tuesday: data[1],
+    wednesday: data[2],
+    thursday: data[3],
+    friday: data[4],
+    saturday: data[5],
+    sunday: data[6],
+  };
+  return days;
 };
 
 export const markCurrent = (data: TimetableData): void => {

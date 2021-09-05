@@ -58,8 +58,11 @@ export default defineComponent({
     const lessons = ref<TimetableData | null>(null);
     const current = ref<LessonDTO[] | null>(null);
     const currentIdx = ref(getToday());
-    onMounted(() =>
-      getLessons().then((data) => {
+    const currentOffset = ref(0);
+    const currentWeekStart = ref(1);
+    const currentInterval = ref(0);
+    const fetchLessons = () => {
+      getLessons(currentWeekStart.value, currentOffset.value).then((data) => {
         if (settings) {
           filterLessons(data, settings.angInf, settings.wf, settings.lang);
         }
@@ -68,13 +71,30 @@ export default defineComponent({
         lessons.value = timetableData;
         current.value =
           timetableData[getDayByIdx(currentIdx.value) as keyof TimetableData];
-        setInterval(() => {
+        currentInterval.value = setInterval(() => {
           markCurrent(timetableData);
         }, 5000);
-      })
-    );
-    const setCurrentIdx = (idx: number) => {
+      });
+    };
+    onMounted(() => {
+      const now = new Date(new Date().toISOString().split("T")[0]);
+      const startDay = 1; // 0=sunday, 1=monday etc.
+      const d = now.getDay(); // get the current day
+      const weekStart = new Date(
+        now.valueOf() - (d <= 0 ? 7 - startDay : d - startDay) * 86400000
+      );
+      currentWeekStart.value = weekStart.getTime();
+      fetchLessons();
+    });
+    const setCurrentIdx = (idx: number, offset: number, weekStart: number) => {
       currentIdx.value = idx;
+      if (currentOffset.value !== offset) {
+        currentOffset.value = offset;
+        currentWeekStart.value = weekStart;
+        lessons.value = null;
+        fetchLessons();
+        return;
+      }
       if (lessons.value) {
         current.value = lessons.value[getDayByIdx(idx) as keyof TimetableData];
       }

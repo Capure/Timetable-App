@@ -1,5 +1,9 @@
-interface Distribution {
+interface TeamVirtual {
+  id: number;
+  key: string;
   shortcut: string;
+  name: string;
+  partType: string;
 }
 
 export interface LessonDTO {
@@ -7,12 +11,11 @@ export interface LessonDTO {
   name: string;
   short: string;
   current?: boolean;
-  distribution?: Distribution;
-  change?: {
-    Type: number;
-  };
+  distribution?: TeamVirtual;
+  change?: string;
   room?: {
+    id: number;
     code: string;
   };
-  timestamp?: string;
+  timestamp?: number;
 }

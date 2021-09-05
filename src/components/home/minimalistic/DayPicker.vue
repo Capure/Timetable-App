@@ -4,7 +4,10 @@
       <button @click="setPrev" class="btn arrow">
         <ion-icon name="chevron-back-outline" />
       </button>
-      <button @click="setToday" class="btn">{{ currentDay }}</button>
+      <div class="date-container">
+        <button @click="setToday" class="btn">{{ currentDay }}</button>
+        <div class="date">{{ currentDate }}</div>
+      </div>
       <button @click="setNext" class="btn arrow">
         <ion-icon name="chevron-forward-outline" />
       </button>
@@ -24,31 +27,58 @@ export default defineComponent({
   setup(_, ctx) {
     const settings: Settings | undefined = inject("settings");
     const currentIdx = ref(getToday());
+    const currentOffset = ref(0);
     const currentDay = ref(DAYS[currentIdx.value]);
+    const currentDate = ref(new Date().toISOString().split("T")[0]);
 
     const setPrev = () => {
       currentIdx.value = currentIdx.value === 0 ? 6 : currentIdx.value - 1;
+      if (currentIdx.value === 6) {
+        currentOffset.value = currentOffset.value - 7;
+      }
     };
 
     const setNext = () => {
       currentIdx.value = currentIdx.value === 6 ? 0 : currentIdx.value + 1;
+      if (currentIdx.value === 0) {
+        currentOffset.value = currentOffset.value + 7;
+      }
     };
 
     watch(currentIdx, (newIdx) => {
-      ctx.emit("newCurrent", currentIdx.value);
       currentDay.value = DAYS[newIdx];
+      currentDate.value = new Date(
+        new Date().getTime() +
+          (currentOffset.value - (6 - currentIdx.value)) * 86400000
+      )
+        .toISOString()
+        .split("T")[0];
+      const startDate = new Date(currentDate.value);
+      const startDay = 1; // 0=sunday, 1=monday etc.
+      const d = startDate.getDay(); // get the current day
+      const weekStart = new Date(
+        startDate.valueOf() - (d <= 0 ? 7 - startDay : d - startDay) * 86400000
+      );
+      ctx.emit(
+        "newCurrent",
+        currentIdx.value,
+        currentOffset.value,
+        weekStart.getTime()
+      );
     });
 
     function setToday() {
       const today = getToday();
       currentIdx.value = today;
+      currentOffset.value = 0;
+      currentDate.value = new Date().toISOString().split("T")[0];
     }
 
     const mainCss = computed(() => ({
       "--font-color": settings?.fontColor,
     }));
 
-    return { currentDay, mainCss, setPrev, setNext, setToday };
+    return { currentDay, currentDate, mainCss, setPrev, setNext, setToday };
   },
 });
 </script>
@@ -95,5 +125,13 @@ export default defineComponent({
 .arrow {
   font-size: 30px;
   padding-top: 8px;
+}
+
+.date-container {
+  text-align: center;
+}
+
+.date {
+  font-size: 16px;
 }
 </style>

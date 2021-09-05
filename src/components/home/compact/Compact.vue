@@ -32,7 +32,7 @@ export default defineComponent({
     const settings: Settings | undefined = inject("settings");
     const lessons = ref<TimetableData | null>(null);
     onMounted(() =>
-      getLessons().then((data) => {
+      getLessons(0, 0).then((data) => {
         if (settings) {
           filterLessons(data, settings.angInf, settings.wf, settings.lang);
         }
