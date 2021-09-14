@@ -26,7 +26,7 @@ export default defineComponent({
   emits: ["newCurrent"],
   setup(_, ctx) {
     const settings: Settings | undefined = inject("settings");
-    const currentIdx = ref(getToday());
+    const currentIdx = ref(getToday() === 6 ? 0 : getToday() - 1);
     const currentOffset = ref(0);
     const currentDay = ref(DAYS[currentIdx.value]);
     const currentDate = ref(new Date().toISOString().split("T")[0]);
