@@ -49,7 +49,7 @@ export default defineComponent({
       currentDay.value = DAYS[newIdx];
       currentDate.value = new Date(
         new Date().getTime() +
-          (currentOffset.value - (6 - currentIdx.value)) * 86400000
+          (currentOffset.value - (getToday() - currentIdx.value)) * 86400000
       )
         .toISOString()
         .split("T")[0];
