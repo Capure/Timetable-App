@@ -48,7 +48,7 @@ export default defineComponent({
     watch(currentIdx, (newIdx) => {
       currentDay.value = DAYS[newIdx];
       currentDate.value = new Date(
-        new Date().getTime() +
+        new Date(currentDate.value).getTime() +
           (currentOffset.value - (6 - currentIdx.value)) * 86400000
       )
         .toISOString()
