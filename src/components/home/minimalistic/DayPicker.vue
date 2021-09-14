@@ -32,17 +32,17 @@ export default defineComponent({
     const currentDate = ref(new Date().toISOString().split("T")[0]);
 
     const setPrev = () => {
-      currentIdx.value = currentIdx.value === 0 ? 6 : currentIdx.value - 1;
-      if (currentIdx.value === 6) {
+      if (currentIdx.value === 6 || currentIdx.value === 0) {
         currentOffset.value = currentOffset.value - 7;
       }
+            currentIdx.value = currentIdx.value === 0 ? 6 : currentIdx.value - 1;
     };
 
     const setNext = () => {
-      currentIdx.value = currentIdx.value === 6 ? 0 : currentIdx.value + 1;
-      if (currentIdx.value === 0) {
+      if (currentIdx.value === 0 || currentIdx.value === 6) {
         currentOffset.value = currentOffset.value + 7;
       }
+            currentIdx.value = currentIdx.value === 6 ? 0 : currentIdx.value + 1;
     };
 
     watch(currentIdx, (newIdx) => {
@@ -69,9 +69,9 @@ export default defineComponent({
 
     function setToday() {
       const today = getToday();
-      currentIdx.value = today;
       currentOffset.value = 0;
       currentDate.value = new Date().toISOString().split("T")[0];
+      currentIdx.value = today;
     }
 
     const mainCss = computed(() => ({
