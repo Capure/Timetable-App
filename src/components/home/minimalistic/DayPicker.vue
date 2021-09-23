@@ -45,7 +45,7 @@ export default defineComponent({
             currentIdx.value = currentIdx.value === 6 ? 0 : currentIdx.value + 1;
     };
 
-    watch(currentIdx, (newIdx) => {
+    watch([currentIdx, currentOffset], ([newIdx, newOffset]) => {
       currentDay.value = DAYS[newIdx];
       currentDate.value = new Date(
         new Date().getTime() +
