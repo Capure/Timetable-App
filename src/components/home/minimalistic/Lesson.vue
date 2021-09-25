@@ -2,6 +2,12 @@
   <div class="lesson-main" :style="mainCss">
     <div class="lesson-content">
       <div class="lesson-name">
+        <span v-if="sub">
+          <ion-icon name="repeat-outline"></ion-icon>
+        </span>
+        <span v-if="cancelled">
+          <ion-icon name="trash-outline"></ion-icon>
+        </span>
         {{ name }}
       </div>
       <div class="lesson-time">
@@ -23,15 +29,16 @@ export default defineComponent({
     room: String,
     current: Boolean,
     sub: Boolean,
+    cancelled: Boolean,
   },
   setup(props) {
     const settings: Settings | undefined = inject("settings");
     const mainCss = computed(() => ({
       "--bg-color": props.current
-        ? props.sub
+        ? props.sub || props.cancelled
           ? `${settings?.accentColor}99`
           : settings?.accentColor
-        : props.sub
+        : props.sub || props.cancelled
         ? `${settings?.secondaryColor}99`
         : settings?.secondaryColor,
     }));

@@ -8,9 +8,9 @@
         :key="idx"
         :name="
           lesson.change
-            ? lesson.change.Type === 1
-              ? 'Cancelled'
-              : 'Substitution'
+            ? lesson.change.change.type === 2
+              ? lesson.change.subject.name
+              : lesson.name
             : lesson.name.length < 16
             ? lesson.name
             : lesson.short
@@ -18,7 +18,8 @@
         :time="lesson.time"
         :room="lesson.room ? lesson.room.code : ' '"
         :current="lesson.current"
-        :sub="lesson.change !== null"
+        :sub="lesson.change ? lesson.change.change.type === 2 : false"
+        :cancelled="lesson.change ? lesson.change.change.type === 1 : false"
       />
     </div>
   </div>

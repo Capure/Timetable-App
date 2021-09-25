@@ -21,7 +21,7 @@ export default defineComponent({
       "--secondary-color-on-hover": `${settings?.secondaryColor}99`,
     }));
     const clearCache = () => {
-      localStorage.removeItem("timetable");
+      localStorage.removeItem("timetable-data");
       alert("Cache has been cleared!");
     };
     const lastFetchRaw = localStorage.getItem("lastFetch");

@@ -39,19 +39,19 @@ const cacheLessons = (data: Array<LessonDTO[]>, weekStart: number): void => {
   let newCache: Record<number, Array<LessonDTO[]>> = {};
   newCache[weekStart] = data;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let prev: any = localStorage.getItem("timetable");
+  let prev: any = localStorage.getItem("timetable-data");
   if (prev) {
     prev = JSON.parse(prev);
     newCache = { ...prev, ...newCache };
   }
-  localStorage.setItem("timetable", JSON.stringify(newCache));
+  localStorage.setItem("timetable-data", JSON.stringify(newCache));
   localStorage.setItem("lastFetch", new Date().getTime().toString());
 };
 
 const getLessonsFromCache = async (
   weekStart: number
 ): Promise<Array<LessonDTO[]> | null> => {
-  const prev = localStorage.getItem("timetable");
+  const prev = localStorage.getItem("timetable-data");
   if (!prev) {
     return null;
   }
