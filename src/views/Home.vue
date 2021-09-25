@@ -1,5 +1,5 @@
 <template>
-  <header>Timetable</header>
+  <header @click="goToDebug">Timetable</header>
   <Minimalistic v-if="settings.preferredView === 'minimalistic'" />
   <Compact v-else />
 </template>
@@ -16,7 +16,17 @@ export default defineComponent({
   },
   setup() {
     const settings = inject("settings");
-    return { settings };
+
+    let debugCounter = 0;
+
+    const goToDebug = () => {
+      debugCounter++;
+      if (debugCounter === 5) {
+        window.location.assign("/debug");
+      }
+    };
+
+    return { settings, goToDebug };
   },
 });
 </script>
