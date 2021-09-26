@@ -9,7 +9,9 @@
         :name="
           lesson.change
             ? lesson.change.change.type === 2
-              ? lesson.change.subject.name
+              ? lesson.change.subject
+                ? lesson.change.subject.name
+                : 'Substitution'
               : lesson.name
             : lesson.name.length < 16
             ? lesson.name
