@@ -10,7 +10,9 @@
           lesson.change
             ? lesson.change.change.type === 2
               ? lesson.change.subject
-                ? lesson.change.subject.name
+                ? lesson.change.subject.name.length < 16
+                  ? lesson.change.subject.name
+                  : lesson.change.subject.code
                 : 'Substitution'
               : lesson.name
             : lesson.name.length < 16
@@ -18,7 +20,17 @@
             : lesson.short
         "
         :time="lesson.time"
-        :room="lesson.room ? lesson.room.code : ' '"
+        :room="
+          lesson.change
+            ? lesson.change.room
+              ? lesson.change.room.code
+              : lesson.room
+              ? lesson.room.code
+              : ' '
+            : lesson.room
+            ? lesson.room.code
+            : ' '
+        "
         :current="lesson.current"
         :sub="lesson.change ? lesson.change.change.type === 2 : false"
         :cancelled="lesson.change ? lesson.change.change.type === 1 : false"
