@@ -13,7 +13,9 @@
                 ? lesson.change.subject.name.length < 16
                   ? lesson.change.subject.name
                   : lesson.change.subject.code
-                : 'Substitution'
+                : lesson.name.length < 16
+                ? lesson.name
+                : lesson.short
               : lesson.name
             : lesson.name.length < 16
             ? lesson.name
