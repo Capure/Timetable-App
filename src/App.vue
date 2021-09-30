@@ -92,6 +92,12 @@ body {
   min-height: calc(100vh - 80px);
 }
 
+@media (max-width: 512px) {
+  .router-body {
+    min-height: calc(100vh - 100px);
+  }
+}
+
 ::-webkit-scrollbar {
   display: none;
 }

@@ -51,6 +51,12 @@ export default defineComponent({
   border-radius: 10px;
 }
 
+@media (max-width: 512px) {
+  .main {
+    margin: 0px var(--padding) 30px var(--padding);
+  }
+}
+
 .link {
   background-color: transparent;
   outline: none;
