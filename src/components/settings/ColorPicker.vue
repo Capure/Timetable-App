@@ -140,6 +140,7 @@ export default defineComponent({
   padding: 0px;
   background-color: transparent;
   outline: none;
+  border: none;
   border-radius: 0px;
   box-sizing: border-box;
 }
