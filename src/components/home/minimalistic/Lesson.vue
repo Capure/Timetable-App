@@ -118,6 +118,13 @@ export default defineComponent({
   align-items: center;
 }
 
+@media (max-width: 512px) {
+  .lesson-room {
+    right: 0px;
+    font-size: 32px;
+  }
+}
+
 @media (max-width: 360px) {
   .lesson-room {
     font-size: 25px;

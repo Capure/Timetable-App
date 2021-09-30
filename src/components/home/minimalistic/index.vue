@@ -156,6 +156,9 @@ export default defineComponent({
 }
 
 @media (max-width: 512px) {
+  .lessons {
+    max-width: calc(100% - 30px);
+  }
   .no-lessons {
     margin-top: 60px;
   }

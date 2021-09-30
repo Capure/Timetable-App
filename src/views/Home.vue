@@ -1,18 +1,15 @@
 <template>
-  <header @click="goToDebug">Timetable</header>
-  <Minimalistic v-if="settings.preferredView === 'minimalistic'" />
-  <Compact v-else />
+  <header @click="goToDebug"><span>Timetable</span></header>
+  <Minimalistic />
 </template>
 
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import Minimalistic from "../components/home/minimalistic/index.vue";
-import Compact from "@/components/home/compact/Compact.vue";
 
 export default defineComponent({
   components: {
     Minimalistic,
-    Compact,
   },
   setup() {
     const settings = inject("settings");
@@ -43,6 +40,11 @@ header {
   -webkit-box-pack: center;
   justify-content: center;
   font-weight: 700;
+}
+
+header span {
+  cursor: pointer;
+  user-select: none;
 }
 
 @media (max-width: 512px) {

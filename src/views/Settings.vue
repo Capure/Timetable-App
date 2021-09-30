@@ -3,7 +3,6 @@
   <div class="settings-main">
     <div class="settings-wrapper">
       <ColorPicker />
-      <ViewMode />
       <Option
         name="English/CS"
         dataField="angInf"
@@ -29,7 +28,6 @@
 <script lang="ts">
 import { inject } from "vue";
 import Option from "@/components/settings/Option.vue";
-import ViewMode from "@/components/settings/ViewMode.vue";
 import ColorPicker from "@/components/settings/ColorPicker.vue";
 import {
   ANG_INF_KEYS,
@@ -42,7 +40,6 @@ import {
 export default {
   components: {
     Option,
-    ViewMode,
     ColorPicker,
   },
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -86,13 +83,19 @@ export default {
 }
 
 .settings-wrapper {
-  max-width: 840px;
+  max-width: 400px;
   flex-wrap: wrap;
   display: flex;
   -webkit-box-pack: center;
   justify-content: center;
   align-items: flex-start;
   margin-bottom: 20px;
+}
+
+@media (max-width: 512px) {
+  .settings-wrapper {
+    max-width: 100%;
+  }
 }
 
 .sp {

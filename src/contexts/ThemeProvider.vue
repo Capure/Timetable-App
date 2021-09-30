@@ -17,7 +17,6 @@ export default defineComponent({
         settings.secondaryColor = newSettings.secondaryColor;
         settings.accentColor = newSettings.accentColor;
         settings.fontColor = newSettings.fontColor;
-        settings.preferredView = newSettings.preferredView;
         settings.angInf = newSettings.angInf;
         settings.wf = newSettings.wf;
         settings.lang = newSettings.lang;
