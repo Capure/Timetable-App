@@ -6,6 +6,13 @@ interface TeamVirtual {
   partType: string;
 }
 
+export interface Teacher {
+  id: number;
+  name: string;
+  surname: string;
+  displayName: string;
+}
+
 interface DateTime {
   timestamp: number;
   date: string;
@@ -62,9 +69,11 @@ export interface LessonDTO {
   current?: boolean;
   distribution?: TeamVirtual;
   change?: ChangedLesson;
+  teacher?: Teacher;
   room?: {
     id: number;
     code: string;
   };
   timestamp?: number;
+  order: number;
 }

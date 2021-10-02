@@ -10,6 +10,9 @@
         </span>
         {{ name }}
       </div>
+      <div class="lesson-teacher">
+        {{ teacher }}
+      </div>
       <div class="lesson-time">
         {{ time }}
       </div>
@@ -25,6 +28,7 @@ export default defineComponent({
   name: "Lesson",
   props: {
     name: String,
+    teacher: String,
     time: String,
     room: String,
     current: Boolean,
@@ -49,7 +53,7 @@ export default defineComponent({
 
 <style scoped>
 .lesson-main {
-  height: 140px;
+  height: 95px;
   width: 320px;
   margin: 10px;
   background-color: var(--bg-color);
@@ -67,8 +71,8 @@ export default defineComponent({
 .lesson-content {
   width: calc(100% - 40px);
   margin-left: 20px;
-  height: calc(100% - 40px);
-  margin-top: 20px;
+  height: calc(100% - 30px);
+  margin-top: 15px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -76,31 +80,21 @@ export default defineComponent({
   position: relative;
 }
 
-.lesson-name {
-  font-size: 22px;
-  font-weight: 700;
+.lesson-teacher {
+  font-size: 14px;
+  text-transform: capitalize;
 }
 
-.lesson-time {
-  font-size: 18px;
-  font-weight: 500;
+.lesson-name {
+  font-size: 20px;
+  font-weight: 700;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
-@media (max-width: 512px) {
-  .lesson-content {
-    height: calc(100% - 30px);
-    margin-top: 15px;
-  }
-
-  .lesson-name {
-    font-size: 18px;
-  }
-
-  .lesson-time {
-    font-size: 16px;
-  }
+.lesson-time {
+  font-size: 16px;
+  font-weight: medium;
 }
 
 .lesson-room {

@@ -6,7 +6,7 @@
       <Lesson
         v-for="(lesson, idx) in current"
         :key="idx"
-        :name="
+        :name="`${lesson.order}. ${
           lesson.change
             ? lesson.change.change.type === 2
               ? lesson.change.subject
@@ -20,6 +20,17 @@
             : lesson.name.length < 16
             ? lesson.name
             : lesson.short
+        }`"
+        :teacher="
+          lesson.change
+            ? lesson.change.teacher
+              ? lesson.change.teacher.displayName.toLowerCase()
+              : lesson.teacher
+              ? lesson.teacher.displayName.toLowerCase()
+              : 'N/A'
+            : lesson.teacher
+            ? lesson.teacher.displayName.toLowerCase()
+            : 'N/A'
         "
         :time="lesson.time"
         :room="

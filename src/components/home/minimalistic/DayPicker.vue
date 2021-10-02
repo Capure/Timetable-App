@@ -126,6 +126,12 @@ export default defineComponent({
   }
 }
 
+@media (max-width: 1368px) {
+  .main {
+    height: 100px;
+  }
+}
+
 .switcher {
   height: 50px;
   width: 250px;
