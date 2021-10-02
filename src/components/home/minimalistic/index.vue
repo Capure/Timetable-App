@@ -166,7 +166,7 @@ export default defineComponent({
   user-select: none;
 }
 
-@media (max-width: 512px) {
+@media (max-width: 1368px) {
   .lessons {
     max-width: calc(100% - 30px);
   }

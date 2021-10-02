@@ -120,15 +120,21 @@ export default defineComponent({
   color: var(--font-color);
 }
 
-@media (max-width: 512px) {
-  .main {
-    height: 70px;
-  }
-}
-
 @media (max-width: 1368px) {
   .main {
     height: 100px;
+  }
+}
+
+@media (max-width: 900px) {
+  .main {
+    height: 20vh;
+  }
+}
+
+@media (max-width: 512px) {
+  .main {
+    height: 70px;
   }
 }
 
