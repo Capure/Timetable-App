@@ -46,7 +46,7 @@ export default defineComponent({
         ? props.sub || props.cancelled || props.moved
           ? `${settings?.accentColor}99`
           : settings?.accentColor
-        : props.sub || props.cancelled
+        : props.sub || props.cancelled || props.moved
         ? `${settings?.secondaryColor}99`
         : settings?.secondaryColor,
     }));
