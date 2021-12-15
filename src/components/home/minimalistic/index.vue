@@ -47,6 +47,7 @@
         :current="lesson.current"
         :sub="lesson.change ? lesson.change.change.type === 2 : false"
         :cancelled="lesson.change ? lesson.change.change.type === 1 : false"
+        :moved="lesson.change ? lesson.change.change.type === 3 : false"
       />
     </div>
   </div>

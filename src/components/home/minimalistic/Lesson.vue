@@ -8,6 +8,9 @@
         <span v-if="cancelled">
           <ion-icon name="trash-outline"></ion-icon>
         </span>
+        <span v-if="moved">
+          <ion-icon name="train-outline"></ion-icon>
+        </span>
         {{ name }}
       </div>
       <div class="lesson-teacher">
@@ -34,12 +37,13 @@ export default defineComponent({
     current: Boolean,
     sub: Boolean,
     cancelled: Boolean,
+    moved: Boolean
   },
   setup(props) {
     const settings: Settings | undefined = inject("settings");
     const mainCss = computed(() => ({
       "--bg-color": props.current
-        ? props.sub || props.cancelled
+        ? props.sub || props.cancelled || props.moved
           ? `${settings?.accentColor}99`
           : settings?.accentColor
         : props.sub || props.cancelled
