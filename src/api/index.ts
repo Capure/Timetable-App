@@ -81,7 +81,7 @@ export const getLessons = async (
     cacheLessons(data, weekStart);
   } else {
     data = cache;
-    fetch(`https://timetable-api.vloapp.pl/?offset=${offset}`)
+    fetch(`https://hopeful-snyder-d01795.netlify.app/?offset=${offset}`)
       .then((res) => res.json())
       .then((data) => cacheLessons(data, weekStart));
   }
