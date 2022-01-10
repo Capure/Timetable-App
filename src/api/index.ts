@@ -75,7 +75,7 @@ export const getLessons = async (
   let data: Array<LessonDTO[]>;
   if (!cache) {
     const res = await fetch(
-      `https://timetable-api.vloapp.pl/?offset=${offset}`
+      `https://hopeful-snyder-d01795.netlify.app/?offset=${offset}`
     );
     data = await res.json();
     cacheLessons(data, weekStart);
