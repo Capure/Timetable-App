@@ -1,6 +1,9 @@
 <template>
   <div class="colorpicker-main" :style="mainCss">
     <div class="colorpicker-title">Choose your theme</div>
+    <!-- <div class="colorpicker-body">
+      <Switch :options="['Main', 'Sec', 'Accent', 'Font']" value="0"></Switch>
+    </div> -->
     <div class="colorpicker-labels">
       <div class="colorpicker-label">Main</div>
       <div class="colorpicker-label">Sec</div>
@@ -57,9 +60,11 @@
 
 <script lang="ts">
 import { defaultSettings, Settings } from "@/models/settings";
+// import Switch from "./Switch.vue";
 import { computed, defineComponent, inject } from "vue";
 export default defineComponent({
   name: "ColorPicker",
+  // components: { Switch },
   setup() {
     const settings: Settings | undefined = inject("settings");
 
@@ -94,9 +99,8 @@ export default defineComponent({
   border-radius: 10px;
   background-color: var(--bg-color);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
 @media (max-width: 840px) {
@@ -109,25 +113,22 @@ export default defineComponent({
   text-align: center;
   width: 100%;
   font-size: 22px;
-  padding-top: 12px;
+  padding: 10px 12px;
+}
+
+.colorpicker-body {
+  height: 45%;
+  width: 100%;
 }
 
 .colorpicker-labels {
-  height: 50px;
-  width: calc(100% - 40px);
+  width: 92%;
   display: flex;
   justify-content: space-evenly;
-  align-items: center;
-}
-
-.colorpicker-label {
-  width: 50px;
-  line-height: 50px;
-  text-align: center;
 }
 
 .colorpicker-pickers {
-  height: 50px;
+  height: 70px;
   width: calc(100% - 40px);
   display: flex;
   justify-content: space-evenly;

@@ -1,7 +1,7 @@
 <template>
   <div class="main" :style="mainCss">
     <small style="line-height: 70px"
-      >© Copyright 2021,
+      >© Copyright 2022,
       <a target="_blank" href="https://github.com/Capure" class="github"
         >Capure</a
       ></small
@@ -27,8 +27,8 @@ export default defineComponent({
     const mainCss = computed(() => ({
       "--bg-color": settings?.secondaryColor,
       "--font-color": settings?.fontColor,
-      "--padding": path.value === "/" ? "25px" : "10px",
-      "--gaps": path.value === "/" ? "50px" : "20px",
+      "--padding": "25px",
+      "--gaps": "50px",
     }));
 
     watch(route, (newRoute: RouteLocationNormalized) => {
