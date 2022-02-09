@@ -1,14 +1,22 @@
 <template>
-  <div class="main" :style="mainCss">
-    <div class="switcher">
-      <button @click="setPrev" class="btn arrow">
+  <div class="main custom-home-daypicker-main" :style="mainCss">
+    <div class="switcher custom-home-daypicker-switcher">
+      <button
+        @click="setPrev"
+        class="btn arrow custom-home-daypicker-btn custom-home-daypicker-arrow"
+      >
         <ion-icon name="chevron-back-outline" />
       </button>
       <div class="date-container">
-        <button @click="setToday" class="btn">{{ currentDay }}</button>
+        <button @click="setToday" class="btn custom-home-daypicker-btn">
+          {{ currentDay }}
+        </button>
         <div class="date">{{ currentDate }}</div>
       </div>
-      <button @click="setNext" class="btn arrow">
+      <button
+        @click="setNext"
+        class="btn arrow custom-home-daypicker-btn custom-home-daypicker-arrow"
+      >
         <ion-icon name="chevron-forward-outline" />
       </button>
     </div>

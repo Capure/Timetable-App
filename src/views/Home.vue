@@ -1,5 +1,7 @@
 <template>
-  <header @click="goToDebug"><span>Timetable</span></header>
+  <header @click="goToDebug" class="custom-home-header">
+    <span>Timetable</span>
+  </header>
   <Minimalistic />
 </template>
 

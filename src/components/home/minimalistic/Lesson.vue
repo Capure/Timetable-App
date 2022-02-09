@@ -1,7 +1,7 @@
 <template>
-  <div class="lesson-main" :style="mainCss">
-    <div class="lesson-content">
-      <div class="lesson-name">
+  <div class="lesson-main custom-home-lesson-main" :style="mainCss">
+    <div class="lesson-content custom-home-lesson-content">
+      <div class="lesson-name custom-home-lesson-name">
         <span v-if="sub">
           <ion-icon name="repeat-outline"></ion-icon>
         </span>
@@ -13,13 +13,13 @@
         </span>
         {{ name }}
       </div>
-      <div class="lesson-teacher">
+      <div class="lesson-teacher custom-home-lesson-teacher">
         {{ teacher }}
       </div>
-      <div class="lesson-time">
+      <div class="lesson-time custom-home-lesson-time">
         {{ time }}
       </div>
-      <div class="lesson-room">{{ room }}</div>
+      <div class="lesson-room custom-home-lesson-room">{{ room }}</div>
     </div>
   </div>
 </template>
@@ -37,7 +37,7 @@ export default defineComponent({
     current: Boolean,
     sub: Boolean,
     cancelled: Boolean,
-    moved: Boolean
+    moved: Boolean,
   },
   setup(props) {
     const settings: Settings | undefined = inject("settings");

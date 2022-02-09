@@ -1,6 +1,6 @@
 <template>
   <ThemeProvider @change="setSettings">
-    <div :style="theme" class="router-body">
+    <div :style="theme" class="router-body custom-router-body">
       <router-view />
     </div>
     <Footer />
@@ -59,7 +59,14 @@ export default defineComponent({
       settings.angInf = newSettings.angInf;
       settings.wf = newSettings.wf;
       settings.lang = newSettings.lang;
+      settings.customCss = newSettings.customCss;
       setBodyBackgroundColor();
+
+      // injects custom css
+      const customStyle = document.createElement("style");
+      customStyle.type = "text/css";
+      customStyle.innerText = settings.customCss || "";
+      document.head.appendChild(customStyle);
     };
     const theme = computed(() => ({
       color: settings.fontColor,

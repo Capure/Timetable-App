@@ -1,13 +1,24 @@
 <template>
-  <div class="colorpicker-main" :style="mainCss">
-    <div class="colorpicker-title">Choose your theme</div>
-    <div class="colorpicker-labels">
-      <div class="colorpicker-label">Main</div>
-      <div class="colorpicker-label">Sec</div>
-      <div class="colorpicker-label">Accent</div>
-      <div class="colorpicker-label">Font</div>
+  <div
+    class="colorpicker-main custom-settings-colorpicker-main"
+    :style="mainCss"
+  >
+    <div class="colorpicker-title custom-settings-colorpicker-title">
+      Choose your theme
     </div>
-    <div class="colorpicker-pickers">
+    <div class="colorpicker-labels custom-settings-colorpicker-labels">
+      <div class="colorpicker-label custom-settings-colorpicker-label">
+        Main
+      </div>
+      <div class="colorpicker-label custom-settings-colorpicker-label">Sec</div>
+      <div class="colorpicker-label custom-settings-colorpicker-label">
+        Accent
+      </div>
+      <div class="colorpicker-label custom-settings-colorpicker-label">
+        Font
+      </div>
+    </div>
+    <div class="colorpicker-pickers custom-settings-colorpicker-pickers">
       <input
         @change="
           (e) => {
@@ -15,7 +26,7 @@
           }
         "
         type="color"
-        class="colorpicker-picker"
+        class="colorpicker-picker custom-settings-colorpicker-picker"
         :value="settings.mainColor"
       />
       <input
@@ -25,7 +36,7 @@
           }
         "
         type="color"
-        class="colorpicker-picker"
+        class="colorpicker-picker custom-settings-colorpicker-picker"
         :value="settings.secondaryColor"
       />
       <input
@@ -35,7 +46,7 @@
           }
         "
         type="color"
-        class="colorpicker-picker"
+        class="colorpicker-picker custom-settings-colorpicker-picker"
         :value="settings.accentColor"
       />
       <input
@@ -45,11 +56,14 @@
           }
         "
         type="color"
-        class="colorpicker-picker"
+        class="colorpicker-picker custom-settings-colorpicker-picker"
         :value="settings.fontColor"
       />
     </div>
-    <button @click="restoreToDefaults" class="colorpicker-default">
+    <button
+      @click="restoreToDefaults"
+      class="colorpicker-default custom-settings-colorpicker-default"
+    >
       Restore defaults
     </button>
   </div>

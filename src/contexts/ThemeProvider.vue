@@ -20,6 +20,7 @@ export default defineComponent({
         settings.angInf = newSettings.angInf;
         settings.wf = newSettings.wf;
         settings.lang = newSettings.lang;
+        settings.customCss = newSettings.customCss;
       }
     });
     watch(settings, (newSettings) => {

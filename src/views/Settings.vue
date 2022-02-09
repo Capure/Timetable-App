@@ -1,7 +1,7 @@
 <template>
-  <div class="title">Settings</div>
-  <div class="settings-main">
-    <div class="settings-wrapper">
+  <div class="title custom-settings-header">Settings</div>
+  <div class="settings-main custom-settings-main">
+    <div class="settings-wrapper custom-settings-wrapper">
       <ColorPicker />
       <Option
         name="English/CS"

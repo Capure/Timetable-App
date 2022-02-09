@@ -1,21 +1,26 @@
 <template>
-  <header>Timetable</header>
-  <div class="layout" :style="mainCss">
-    <div class="center">
-      <div class="alert">WARNING: This is a debug page!</div>
+  <header class="custom-debug-header">Timetable</header>
+  <div class="layout custom-debug-layout" :style="mainCss">
+    <div class="center custom-debug-center">
+      <div class="alert custom-debug-alert">WARNING: This is a debug page!</div>
       <button @click="clearCache">Clear cache</button>
-      <div class="info">Last fetch: {{ lastFetch }}</div>
+      <div class="info custom-debug-info">Last fetch: {{ lastFetch }}</div>
+      <div class="info custom-css custom-debug-custom-css">
+        <input v-model="customCssValue" type="text" placeholder="Custom css" />
+        <button @click="updateCustomCss">Set</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Settings } from "@/models/settings";
-import { computed, defineComponent, inject } from "vue";
+import { computed, defineComponent, inject, ref } from "vue";
 
 export default defineComponent({
   setup() {
     const settings: Settings | undefined = inject("settings");
+    const customCssValue = ref(settings ? settings.customCss || "" : "");
     const mainCss = computed(() => ({
       "--secondary-color": settings?.secondaryColor,
       "--secondary-color-on-hover": `${settings?.secondaryColor}99`,
@@ -28,7 +33,20 @@ export default defineComponent({
     const lastFetch = lastFetchRaw
       ? new Date(+lastFetchRaw).toISOString()
       : "N/A";
-    return { mainCss, clearCache, lastFetch };
+
+    const updateCustomCss = () => {
+      if (!settings) return;
+      settings.customCss = customCssValue.value;
+      alert("You might have to reload the page.");
+    };
+
+    return {
+      mainCss,
+      clearCache,
+      lastFetch,
+      customCssValue,
+      updateCustomCss,
+    };
   },
 });
 </script>
@@ -115,5 +133,28 @@ button:hover {
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;
+}
+
+.custom-css {
+  justify-content: space-between;
+}
+
+.custom-css button {
+  height: 40px;
+  width: 100px;
+  border: 1px solid rgb(255, 26, 64);
+  margin: 0px 10px 0px 0px;
+}
+
+.custom-css input {
+  outline: none;
+  color: inherit;
+  background: inherit;
+  border: 1px solid rgb(255, 26, 64);
+  border-radius: 10px;
+  height: 40px;
+  box-sizing: border-box;
+  margin-left: 10px;
+  padding: 10px;
 }
 </style>

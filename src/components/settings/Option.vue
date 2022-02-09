@@ -1,6 +1,10 @@
 <template>
-  <div @click="setToNext" class="option-main" :style="mainCss">
-    <div class="option-name">
+  <div
+    @click="setToNext"
+    class="option-main custom-settings-option-main"
+    :style="mainCss"
+  >
+    <div class="option-name custom-settings-option-name">
       {{ name }}
     </div>
     {{ label }}

@@ -1,12 +1,14 @@
 <template>
-  <div class="main" :style="mainCss">
+  <div class="main custom-footer-main" :style="mainCss">
     <small style="line-height: 70px"
       >© Copyright 2022,
       <a target="_blank" href="https://github.com/Capure" class="github"
         >Capure</a
       ></small
     >
-    <router-link class="link" :to="path === '/' ? 'settings' : '/'"
+    <router-link
+      class="link custom-footer-navigation"
+      :to="path === '/' ? 'settings' : '/'"
       ><ion-icon v-if="path === '/'" name="settings-outline" />
       <ion-icon v-else name="home-outline"
     /></router-link>

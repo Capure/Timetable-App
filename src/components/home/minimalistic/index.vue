@@ -1,8 +1,15 @@
 <template>
   <DayPicker @newCurrent="setCurrentIdx" />
-  <div v-if="!lessons" class="loader" :style="injectCss"></div>
-  <div class="lessons-wrapper" v-else-if="current.length > 0">
-    <div class="lessons">
+  <div
+    v-if="!lessons"
+    class="loader custom-home-loader"
+    :style="injectCss"
+  ></div>
+  <div
+    class="lessons-wrapper custom-home-lessons-wrapper"
+    v-else-if="current.length > 0"
+  >
+    <div class="lessons custom-home-lessons">
       <Lesson
         v-for="(lesson, idx) in current"
         :key="idx"
@@ -51,7 +58,9 @@
       />
     </div>
   </div>
-  <div class="no-lessons" v-else>There are no lessons that day!</div>
+  <div class="no-lessons custom-home-no-lessons" v-else>
+    There are no lessons that day!
+  </div>
 </template>
 
 <script lang="ts">
