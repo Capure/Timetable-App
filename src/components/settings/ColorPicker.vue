@@ -1,9 +1,6 @@
 <template>
   <div class="colorpicker-main" :style="mainCss">
     <div class="colorpicker-title">Choose your theme</div>
-    <!-- <div class="colorpicker-body">
-      <Switch :options="['Main', 'Sec', 'Accent', 'Font']" value="0"></Switch>
-    </div> -->
     <div class="colorpicker-labels">
       <div class="colorpicker-label">Main</div>
       <div class="colorpicker-label">Sec</div>
@@ -60,11 +57,10 @@
 
 <script lang="ts">
 import { defaultSettings, Settings } from "@/models/settings";
-// import Switch from "./Switch.vue";
 import { computed, defineComponent, inject } from "vue";
+
 export default defineComponent({
   name: "ColorPicker",
-  // components: { Switch },
   setup() {
     const settings: Settings | undefined = inject("settings");
 
@@ -95,7 +91,7 @@ export default defineComponent({
 .colorpicker-main {
   height: 200px;
   width: 400px;
-  margin: 10px;
+  margin: 10px 25px;
   border-radius: 10px;
   background-color: var(--bg-color);
   display: flex;

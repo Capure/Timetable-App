@@ -60,7 +60,7 @@ export default defineComponent({
 .option-main {
   height: 70px;
   width: calc(100% - 20px);
-  margin: 10px;
+  margin: 10px 25px;
   border-radius: 10px;
   background-color: var(--bg-color);
   display: flex;
