@@ -1,5 +1,5 @@
 <template>
-  <div class="lesson-main custom-home-lesson-main" :style="mainCss">
+  <div :class="`lesson-main custom-home-lesson-main ${current ? 'custom-home-lesson-main-active' : ''}`" :style="mainCss">
     <div class="lesson-content custom-home-lesson-content">
       <div class="lesson-name custom-home-lesson-name">
         <span v-if="sub">

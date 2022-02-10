@@ -66,6 +66,8 @@ yarn lint
 
 - `custom-home-lesson-main`
 
+- `custom-home-lesson-main-active`
+
 - `custom-home-lesson-content`
 
 - `custom-home-lesson-name`
