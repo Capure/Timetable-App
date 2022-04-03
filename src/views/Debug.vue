@@ -3,8 +3,12 @@
   <div class="layout custom-debug-layout" :style="mainCss">
     <div class="center custom-debug-center">
       <div class="alert custom-debug-alert">WARNING: This is a debug page!</div>
-      <button @click="clearCache">Clear cache</button>
-      <div class="info custom-debug-info">Last fetch: {{ lastFetch }}</div>
+      <div class="info custom-debug-info">
+        This app was retrofitted with the api from the new version of the
+        timetable.
+        <br />
+        The cache isn't required anymore.
+      </div>
       <div class="info custom-css custom-debug-custom-css">
         <input v-model="customCssValue" type="text" placeholder="Custom css" />
         <button @click="updateCustomCss">Set</button>
@@ -25,14 +29,6 @@ export default defineComponent({
       "--secondary-color": settings?.secondaryColor,
       "--secondary-color-on-hover": `${settings?.secondaryColor}99`,
     }));
-    const clearCache = () => {
-      localStorage.removeItem("timetable-cache");
-      alert("Cache has been cleared!");
-    };
-    const lastFetchRaw = localStorage.getItem("lastFetch");
-    const lastFetch = lastFetchRaw
-      ? new Date(+lastFetchRaw).toISOString()
-      : "N/A";
 
     const updateCustomCss = () => {
       if (!settings) return;
@@ -42,8 +38,6 @@ export default defineComponent({
 
     return {
       mainCss,
-      clearCache,
-      lastFetch,
       customCssValue,
       updateCustomCss,
     };
@@ -125,13 +119,15 @@ button:hover {
 }
 
 .info {
-  height: 60px;
+  height: 120px;
   width: 100%;
   border-radius: 10px;
   background: var(--secondary-color);
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
   margin-bottom: 10px;
 }
 

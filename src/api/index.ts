@@ -18,10 +18,10 @@ export const filterLessons = (
   const filteredData = Object.keys(data).map((key) =>
     data[key as keyof TimetableData].filter(
       (lesson) =>
-        lesson.distribution === undefined ||
-        lesson.distribution.shortcut === wf ||
-        lesson.distribution.shortcut === lang ||
-        lesson.distribution.shortcut === angInf
+        lesson.distribution === null ||
+        lesson.distribution === wf ||
+        lesson.distribution === lang ||
+        lesson.distribution === angInf
     )
   );
   data.monday = filteredData[0];
@@ -33,59 +33,48 @@ export const filterLessons = (
   data.sunday = filteredData[6];
 };
 
-type LessonCache = Record<number, Array<LessonDTO[]>>;
-
-const cacheLessons = (data: Array<LessonDTO[]>, weekStart: number): void => {
-  let newCache: Record<number, Array<LessonDTO[]>> = {};
-  newCache[weekStart] = data;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let prev: any = localStorage.getItem("timetable-cache");
-  if (prev) {
-    prev = JSON.parse(prev);
-    newCache = { ...prev, ...newCache };
-  }
-  localStorage.setItem("timetable-cache", JSON.stringify(newCache));
-  localStorage.setItem("lastFetch", new Date().getTime().toString());
-};
-
-const getLessonsFromCache = async (
-  weekStart: number
-): Promise<Array<LessonDTO[]> | null> => {
-  const prev = localStorage.getItem("timetable-cache");
-  if (!prev) {
-    return null;
-  }
-  try {
-    const lessonCache: LessonCache = JSON.parse(prev);
-    const cached = lessonCache[weekStart];
-    if (!cached) {
-      throw Error("No entry for this week.");
-    }
-    return cached;
-  } catch {
-    return null;
-  }
-};
-
-export const getLessons = async (
-  weekStart: number,
-  offset: number
-): Promise<TimetableData> => {
-  const cache = await getLessonsFromCache(weekStart);
-  let data: Array<LessonDTO[]>;
-  if (!cache) {
-    const res = await fetch(
-      `https://hopeful-snyder-d01795.netlify.app/?offset=${offset}`
-    );
-    data = await res.json();
-    cacheLessons(data, weekStart);
-  } else {
-    data = cache;
-    fetch(`https://hopeful-snyder-d01795.netlify.app/?offset=${offset}`)
-      .then((res) => res.json())
-      .then((data) => cacheLessons(data, weekStart));
-  }
-  data.forEach((day) => day.forEach((lesson) => (lesson.current = false)));
+export const getLessons = async (weekStart: number): Promise<TimetableData> => {
+  const rawRes = await fetch("https://api.vlo.software/graphql", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      variables: null,
+      query: `{
+        lessons(dateFrom: "${
+          new Date(weekStart).toISOString().split("T")[0]
+        }", dateTo: "${
+        new Date(weekStart + 6 * 86400000).toISOString().split("T")[0]
+      }") {
+          time
+          teacher
+          subject {
+            short
+            name
+          }
+          room
+          order
+          distribution
+          date
+          change {
+            room
+            subject {
+              name
+              short
+            }
+            teacher
+            type
+          }
+        }
+      }
+      `,
+    }),
+  });
+  const data = (await rawRes.json()).data.lessons;
+  data.forEach((day: Array<LessonDTO>) =>
+    day.forEach((lesson: LessonDTO) => (lesson.current = false))
+  );
   const days: TimetableData = {
     monday: data[0],
     tuesday: data[1],

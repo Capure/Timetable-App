@@ -15,46 +15,46 @@
         :key="idx"
         :name="`${lesson.order}. ${
           lesson.change
-            ? lesson.change.change.type === 2
+            ? lesson.change.type === 2
               ? lesson.change.subject
                 ? lesson.change.subject.name.length < 16
                   ? lesson.change.subject.name
                   : lesson.change.subject.code
-                : lesson.name.length < 16
-                ? lesson.name
-                : lesson.short
-              : lesson.name
-            : lesson.name.length < 16
-            ? lesson.name
-            : lesson.short
+                : lesson.subject.name.length < 16
+                ? lesson.subject.name
+                : lesson.subject.short
+              : lesson.subject.name
+            : lesson.subject.name.length < 16
+            ? lesson.subject.name
+            : lesson.subject.short
         }`"
         :teacher="
           lesson.change
             ? lesson.change.teacher
-              ? lesson.change.teacher.displayName.toLowerCase()
+              ? lesson.change.teacher.toLowerCase()
               : lesson.teacher
-              ? lesson.teacher.displayName.toLowerCase()
+              ? lesson.teacher.toLowerCase()
               : 'N/A'
             : lesson.teacher
-            ? lesson.teacher.displayName.toLowerCase()
+            ? lesson.teacher.toLowerCase()
             : 'N/A'
         "
         :time="lesson.time"
         :room="
           lesson.change
             ? lesson.change.room
-              ? lesson.change.room.code
+              ? lesson.change.room
               : lesson.room
-              ? lesson.room.code
+              ? lesson.room
               : ' '
             : lesson.room
-            ? lesson.room.code
+            ? lesson.room
             : ' '
         "
         :current="lesson.current"
-        :sub="lesson.change ? lesson.change.change.type === 2 : false"
-        :cancelled="lesson.change ? lesson.change.change.type === 1 : false"
-        :moved="lesson.change ? lesson.change.change.type === 3 : false"
+        :sub="lesson.change ? lesson.change.type === 2 : false"
+        :cancelled="lesson.change ? lesson.change.type === 1 : false"
+        :moved="lesson.change ? lesson.change.type === 3 : false"
       />
     </div>
   </div>
@@ -100,7 +100,7 @@ export default defineComponent({
     const currentWeekStart = ref(1);
     const currentInterval = ref(0);
     const fetchLessons = () => {
-      getLessons(currentWeekStart.value, currentOffset.value).then((data) => {
+      getLessons(currentWeekStart.value).then((data) => {
         if (settings) {
           filterLessons(data, settings.angInf, settings.wf, settings.lang);
         }

@@ -1,36 +1,4 @@
-interface TeamVirtual {
-  id: number;
-  key: string;
-  shortcut: string;
-  name: string;
-  partType: string;
-}
-
-export interface Teacher {
-  id: number;
-  name: string;
-  surname: string;
-  displayName: string;
-}
-
-interface DateTime {
-  timestamp: number;
-  date: string;
-  time: string;
-}
-
-interface TimeSlot {
-  id: number;
-  start: string;
-  end: string;
-  display: string;
-  position: number;
-}
-
-interface LessonRoom {
-  id: number;
-  code: string;
-}
+type Group = "gr1" | "gr2" | "gr1n" | "gr2n" | "gr3n" | "gr4r" | "DZ" | "CH";
 
 interface Subject {
   id: number;
@@ -40,40 +8,24 @@ interface Subject {
   position: number;
 }
 
-interface LessonChanges {
-  id: number;
-  type: number;
-  separation: boolean;
-}
-
 interface ChangedLesson {
-  id?: number;
-  unitId?: number;
-  scheduleId?: number;
-  lessonDate?: DateTime;
-  note?: string;
-  reason?: string;
-  time?: TimeSlot;
-  room?: LessonRoom;
+  room?: string;
   subject?: Subject;
-  event?: string;
-  change?: LessonChanges;
-  changeDate?: DateTime;
-  distribution?: TeamVirtual;
+  teacher?: string;
+  type: 0 | 1 | 2 | 3;
 }
 
+interface Subject {
+  short: string;
+  name: string;
+}
 export interface LessonDTO {
   time: string;
-  name: string;
-  short: string;
+  teacher: string;
+  subject: Subject;
   current?: boolean;
-  distribution?: TeamVirtual;
+  distribution?: Group;
   change?: ChangedLesson;
-  teacher?: Teacher;
-  room?: {
-    id: number;
-    code: string;
-  };
-  timestamp?: number;
+  room?: string;
   order: number;
 }
