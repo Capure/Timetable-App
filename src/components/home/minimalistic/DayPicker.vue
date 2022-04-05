@@ -32,7 +32,13 @@ import { DAYS } from "../../../consts";
 export default defineComponent({
   name: "DayPicker",
   emits: ["newCurrent"],
-  setup(_, ctx) {
+  props: {
+    current: {
+      type: Number,
+      required: true,
+    },
+  },
+  setup(props, ctx) {
     const settings: Settings | undefined = inject("settings");
     const currentIdx = ref(getToday());
     const currentOffset = ref(0);
@@ -61,6 +67,7 @@ export default defineComponent({
       )
         .toISOString()
         .split("T")[0];
+      if (newIdx === props.current) return; // Triggered by scroll
       const startDate = new Date(currentDate.value);
       const startDay = 1; // 0=sunday, 1=monday etc.
       const d = startDate.getDay(); // get the current day
@@ -75,6 +82,13 @@ export default defineComponent({
       );
     });
 
+    watch(
+      () => props.current,
+      (newIdx) => {
+        currentIdx.value = newIdx;
+      }
+    );
+
     function setToday() {
       const today = getToday();
       currentOffset.value = 0;
@@ -85,31 +99,6 @@ export default defineComponent({
     const mainCss = computed(() => ({
       "--font-color": settings?.fontColor,
     }));
-
-    // Swipe logic
-
-    // Keeps the prev touch point
-    const moveState: { x: number; y: number } = { x: 0, y: 0 };
-
-    document.documentElement.addEventListener("touchstart", (e) => {
-      moveState.x = e.touches[0].clientX;
-      moveState.y = e.touches[0].clientY;
-    });
-
-    document.documentElement.addEventListener("touchend", (e) => {
-      const diff = {
-        x: moveState.x - e.changedTouches[0].clientX,
-        y: moveState.y - e.changedTouches[0].clientY,
-      };
-      // The user has to swipe for at least 1/3 of the screen
-      if (diff.x > window.innerWidth / 3) {
-        setNext();
-      } else if (-diff.x > window.innerWidth / 3) {
-        setPrev();
-      }
-      moveState.x = 0;
-      moveState.y = 0;
-    });
 
     return { currentDay, currentDate, mainCss, setPrev, setNext, setToday };
   },
