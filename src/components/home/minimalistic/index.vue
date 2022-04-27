@@ -61,7 +61,8 @@
         />
       </div>
       <div class="no-lessons custom-home-no-lessons" v-else>
-        There are no lessons that day!
+        <Relaxing />
+        <p>There are no lessons that day!</p>
       </div>
     </div>
   </div>
@@ -81,12 +82,14 @@ import {
 } from "vue";
 import DayPicker from "./DayPicker.vue";
 import Lesson from "./Lesson.vue";
+import Relaxing from "@/assets/relaxing.vue";
 
 export default defineComponent({
   name: "Minimalistic",
   components: {
     DayPicker,
     Lesson,
+    Relaxing
   },
   setup() {
     const settings: Settings | undefined = inject("settings");
@@ -206,6 +209,7 @@ export default defineComponent({
 }
 
 .no-lessons {
+  display: contents;
   width: 100%;
   font-size: 22px;
   text-align: center;
