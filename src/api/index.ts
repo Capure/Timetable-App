@@ -34,7 +34,7 @@ export const filterLessons = (
 };
 
 export const getLessons = async (weekStart: number): Promise<TimetableData> => {
-  const rawRes = await fetch("https://timetable-api.up.railway.app/graphql", {
+  const rawRes = await fetch("http://api.vlo.software/graphql", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
