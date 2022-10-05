@@ -150,7 +150,7 @@ header span {
 
 .category-title {
   font-size: 30px;
-  padding: 15px 20px 5px 20px;
+  padding: 5px 20px 0px 20px;
   text-align: center;
 }
 
@@ -158,14 +158,15 @@ header span {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 5px;
 }
 
 .grade {
-  width: calc(100% - 40px);
+  width: calc(100% - 20px);
   height: 85px;
   background-color: var(--background-color);
   border-radius: 10px;
-  margin: 10px 0;
+  margin: 5px 0;
   display: flex;
 }
 
