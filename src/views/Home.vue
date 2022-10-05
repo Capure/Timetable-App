@@ -1,5 +1,5 @@
 <template>
-  <header @click="goToDebug" class="custom-home-header">
+  <header @dblclick="() => router.push('/debug')" class="custom-home-header">
     <span>Timetable</span>
   </header>
   <Minimalistic />
@@ -7,6 +7,7 @@
 
 <script lang="ts">
 import { defineComponent, inject } from "vue";
+import { useRouter } from "vue-router";
 import Minimalistic from "../components/home/minimalistic/index.vue";
 
 export default defineComponent({
@@ -15,17 +16,9 @@ export default defineComponent({
   },
   setup() {
     const settings = inject("settings");
+    const router = useRouter();
 
-    let debugCounter = 0;
-
-    const goToDebug = () => {
-      debugCounter++;
-      if (debugCounter === 5) {
-        window.location.assign("/debug");
-      }
-    };
-
-    return { settings, goToDebug };
+    return { settings, router };
   },
 });
 </script>

@@ -7,7 +7,7 @@
         <input v-model="customCssValue" type="text" placeholder="Custom css" />
         <button @click="updateCustomCss">Set</button>
       </div>
-      <div class="info info-big custom-debug-info">
+      <div class="info custom-debug-info">
         The Timetable Relay is a service that allows you to access the
         e-registry with your own account. The server is stateless, so it does
         not store any data. Nobody can access your account, except you. The
@@ -15,16 +15,25 @@
         currently experimental and may not work properly. The timetable it self
         is still accesed via the original api.
       </div>
-      <div class="info custom-css custom-debug-custom-css">
+      <div class="info info-column custom-css custom-debug-custom-css">
         <div style="display: flex">
           Timetable Relay:
           <div style="font-weight: 800; margin-left: 10px">
             {{ relayActive ? "active" : "not active" }}
           </div>
         </div>
-        <button v-if="!relayActive" @click="logInToRelay">Sign In</button>
+        <button
+          style="margin-top: 20px"
+          v-if="!relayActive"
+          @click="logInToRelay"
+        >
+          Sign In
+        </button>
       </div>
-      <div v-if="relayActive" class="info custom-css custom-debug-custom-css">
+      <div
+        v-if="relayActive"
+        class="info info-links custom-css custom-debug-custom-css"
+      >
         <button @click="() => router.push('/grades')">Grades</button>
         <button @click="() => router.push('/exams')">Exams</button>
         <button @click="() => router.push('/lucky')">Lucky</button>
@@ -43,6 +52,7 @@ export default defineComponent({
     const settings: Settings | undefined = inject("settings");
     const customCssValue = ref(settings ? settings.customCss || "" : "");
     const mainCss = computed(() => ({
+      "--bg-color": settings?.mainColor,
       "--secondary-color": settings?.secondaryColor,
       "--secondary-color-on-hover": `${settings?.secondaryColor}99`,
     }));
@@ -113,22 +123,16 @@ header {
 }
 
 .layout {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
-  grid-template-areas: ". main .";
+  width: calc(100% - 40px);
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-@media (max-width: 1000px) {
+@media (min-width: 600px) {
   .layout {
-    grid-template-columns: 1fr 3fr 1fr;
-  }
-}
-
-@media (max-width: 600px) {
-  .layout {
-    grid-template-columns: 20px 1fr 20px;
+    width: 512px;
+    margin-left: calc(50% - 256px);
   }
 }
 
@@ -171,8 +175,13 @@ button:hover {
   background: var(--secondary-color-on-hover);
 }
 
+@media (max-width: 400px) {
+  input {
+    width: 150px;
+  }
+}
+
 .info {
-  height: 120px;
   width: 100%;
   border-radius: 10px;
   background: var(--secondary-color);
@@ -185,8 +194,16 @@ button:hover {
   flex-wrap: wrap;
 }
 
-.info-big {
-  height: 250px;
+.info-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-links button {
+  margin: 5px !important;
+  border: none !important;
+  background: var(--bg-color);
 }
 
 .custom-css {
