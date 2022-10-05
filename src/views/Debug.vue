@@ -3,15 +3,31 @@
   <div class="layout custom-debug-layout" :style="mainCss">
     <div class="center custom-debug-center">
       <div class="alert custom-debug-alert">WARNING: This is a debug page!</div>
-      <div class="info custom-debug-info">
-        This app was retrofitted with the api from the new version of the
-        timetable.
-        <br />
-        The cache isn't required anymore.
-      </div>
       <div class="info custom-css custom-debug-custom-css">
         <input v-model="customCssValue" type="text" placeholder="Custom css" />
         <button @click="updateCustomCss">Set</button>
+      </div>
+      <div class="info info-big custom-debug-info">
+        The Timetable Relay is a service that allows you to access the
+        e-registry with your own account. The server is stateless, so it does
+        not store any data. Nobody can access your account, except you. The
+        keystore is stored in your browser's local storage. The feature is
+        currently experimental and may not work properly. The timetable it self
+        is still accesed via the original api.
+      </div>
+      <div class="info custom-css custom-debug-custom-css">
+        <div style="display: flex">
+          Timetable Relay:
+          <div style="font-weight: 800; margin-left: 10px">
+            {{ relayActive ? "active" : "not active" }}
+          </div>
+        </div>
+        <button v-if="!relayActive" @click="logInToRelay">Sign In</button>
+      </div>
+      <div v-if="relayActive" class="info custom-css custom-debug-custom-css">
+        <button @click="() => router.push('/grades')">Grades</button>
+        <button @click="() => router.push('/exams')">Exams</button>
+        <button @click="() => router.push('/lucky')">Lucky</button>
       </div>
     </div>
   </div>
@@ -20,6 +36,7 @@
 <script lang="ts">
 import { Settings } from "@/models/settings";
 import { computed, defineComponent, inject, ref } from "vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   setup() {
@@ -29,6 +46,8 @@ export default defineComponent({
       "--secondary-color": settings?.secondaryColor,
       "--secondary-color-on-hover": `${settings?.secondaryColor}99`,
     }));
+    const relayActive = ref(localStorage.getItem("relay-auth") !== null);
+    const router = useRouter();
 
     const updateCustomCss = () => {
       if (!settings) return;
@@ -36,10 +55,44 @@ export default defineComponent({
       alert("You might have to reload the page.");
     };
 
+    const logInToRelay = async () => {
+      const token = window.prompt("Token", "");
+      const symbol = window.prompt("Symbol", "gdansk");
+      const pin = window.prompt("Pin", "");
+      if (!token || !symbol || !pin) {
+        alert("Invalid input");
+        return;
+      }
+
+      const response = await fetch(`https://relay.vlo.software/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token,
+          symbol,
+          pin,
+        }),
+      });
+
+      if (response.status !== 200) {
+        alert("Invalid creds");
+        return;
+      }
+
+      const data = await response.json();
+      localStorage.setItem("relay-auth", btoa(JSON.stringify(data)));
+      relayActive.value = true;
+    };
+
     return {
+      relayActive,
       mainCss,
       customCssValue,
       updateCustomCss,
+      logInToRelay,
+      router,
     };
   },
 });
@@ -129,6 +182,11 @@ button:hover {
   padding: 20px;
   box-sizing: border-box;
   margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.info-big {
+  height: 250px;
 }
 
 .custom-css {
