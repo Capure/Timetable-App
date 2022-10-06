@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="relayActive"
-    :style="{ ...mainCss, display: undefined }"
+    :style="{ ...mainCss, opacity: undefined }"
     class="navbar"
   >
     <div class="navbar-item" @click="() => router.push('/grades')">
@@ -63,7 +63,7 @@ export default defineComponent({
       "--font-color": settings?.fontColor,
       "--padding": "25px",
       "--gaps": "50px",
-      display: relayActive.value ? "none" : undefined,
+      opacity: relayActive.value ? "0" : 1,
     }));
 
     watch(route, (newRoute: RouteLocationNormalized) => {
