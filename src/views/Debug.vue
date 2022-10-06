@@ -36,6 +36,7 @@
       >
         <button @click="() => router.push('/grades')">Grades</button>
         <button @click="() => router.push('/exams')">Exams</button>
+        <button @click="() => router.push('/messages')">Messages</button>
         <button @click="() => router.push('/lucky')">Lucky</button>
       </div>
     </div>
@@ -201,7 +202,7 @@ button:hover {
 }
 
 .info-links button {
-  margin: 5px !important;
+  margin: 8px !important;
   border: none !important;
   background: var(--bg-color);
 }
