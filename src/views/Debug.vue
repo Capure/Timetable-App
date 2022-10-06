@@ -39,6 +39,9 @@
         <button @click="() => router.push('/messages')">Messages</button>
         <button @click="() => router.push('/lucky')">Lucky</button>
       </div>
+      <div v-if="relayActive" class="info custom-debug-info">
+        <button @click="() => router.push('/settings')">Settings</button>
+      </div>
     </div>
   </div>
 </template>

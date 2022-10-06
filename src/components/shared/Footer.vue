@@ -1,4 +1,25 @@
 <template>
+  <div
+    v-if="relayActive"
+    :style="{ ...mainCss, display: undefined }"
+    class="navbar"
+  >
+    <div class="navbar-item" @click="() => router.push('/grades')">
+      <ion-icon name="school-outline"></ion-icon>
+    </div>
+    <div class="navbar-item" @click="() => router.push('/exams')">
+      <ion-icon name="clipboard-outline"></ion-icon>
+    </div>
+    <div class="navbar-item navbar-item-home" @click="() => router.push('/')">
+      <ion-icon name="home-outline"></ion-icon>
+    </div>
+    <div class="navbar-item" @click="() => router.push('/messages')">
+      <ion-icon name="mail-outline"></ion-icon>
+    </div>
+    <div class="navbar-item" @click="() => router.push('/lucky')">
+      <ion-icon name="happy-outline"></ion-icon>
+    </div>
+  </div>
   <div class="main custom-footer-main" :style="mainCss">
     <small style="line-height: 70px"
       >© Copyright 2022,
@@ -17,26 +38,38 @@
 
 <script lang="ts">
 import { Settings } from "@/models/settings";
-import { RouteLocationNormalized, useRoute } from "vue-router";
-import { computed, defineComponent, inject, ref, watch } from "vue";
+import { RouteLocationNormalized, useRoute, useRouter } from "vue-router";
+import { computed, defineComponent, inject, onMounted, ref, watch } from "vue";
 export default defineComponent({
   name: "Footer",
   setup() {
     const settings: Settings | undefined = inject("settings");
+    const router = useRouter();
     const route = useRoute();
     const path = ref(route.path);
+    const relayActive = ref(false);
+
+    onMounted(() => {
+      const auth = localStorage.getItem("relay-auth");
+      if (auth) {
+        relayActive.value = true;
+      }
+    });
 
     const mainCss = computed(() => ({
+      "--main-color": settings?.mainColor,
+      "--accent-color": settings?.accentColor,
       "--bg-color": settings?.secondaryColor,
       "--font-color": settings?.fontColor,
       "--padding": "25px",
       "--gaps": "50px",
+      display: relayActive.value ? "none" : undefined,
     }));
 
     watch(route, (newRoute: RouteLocationNormalized) => {
       path.value = newRoute.path;
     });
-    return { path, mainCss };
+    return { path, router, relayActive, mainCss };
   },
 });
 </script>
@@ -79,5 +112,62 @@ export default defineComponent({
 .github {
   text-decoration: none;
   color: inherit;
+}
+
+.navbar {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  text-align: center;
+  border-radius: 10px;
+  z-index: 50;
+}
+
+.navbar-item {
+  margin-top: 5px;
+  width: 15vw;
+  height: 15vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background: var(--main-color);
+  border-radius: 10px;
+  font-size: 6vw;
+}
+
+.navbar-item-home {
+  font-size: 7vw;
+  width: 18vw;
+  height: 18vw;
+  margin-top: calc(-5px + -0.5vw);
+  background-color: var(--accent-color);
+}
+
+@media (min-width: 550px) {
+  .navbar {
+    justify-content: center;
+  }
+
+  .navbar-item {
+    width: 70px;
+    height: 70px;
+    font-size: 40px;
+    margin: 5px 10px;
+  }
+
+  .navbar-item-home {
+    width: 80px;
+    height: 80px;
+    font-size: 50px;
+    margin-top: -5px;
+  }
 }
 </style>
