@@ -30,12 +30,7 @@
         name="clipboard-outline"
       ></ion-icon>
     </div>
-    <div
-      :class="`navbar-item navbar-item-home ${
-        path === '/' ? 'navbar-item-active' : ''
-      }`"
-      @click="() => router.push('/')"
-    >
+    <div class="navbar-item navbar-item-home" @click="() => router.push('/')">
       <ion-icon
         :style="
           path === '/'
