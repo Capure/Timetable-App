@@ -89,7 +89,7 @@ export default defineComponent({
   components: {
     DayPicker,
     Lesson,
-    Relaxing
+    Relaxing,
   },
   setup() {
     const settings: Settings | undefined = inject("settings");

@@ -1,12 +1,16 @@
 <template>
-  <header @dblclick="() => router.push('/debug')" class="custom-home-header">
+  <header
+    v-if="!relayActive"
+    @dblclick="() => router.push('/debug')"
+    class="custom-home-header"
+  >
     <span>Timetable</span>
   </header>
   <Minimalistic />
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import Minimalistic from "../components/home/minimalistic/index.vue";
 
@@ -17,8 +21,15 @@ export default defineComponent({
   setup() {
     const settings = inject("settings");
     const router = useRouter();
+    const relayActive = ref(false);
 
-    return { settings, router };
+    onMounted(() => {
+      if (localStorage.getItem("relay-auth")) {
+        relayActive.value = true;
+      }
+    });
+
+    return { settings, router, relayActive };
   },
 });
 </script>
@@ -57,3 +68,6 @@ header span {
   font-size: 22px;
 }
 </style>
+
+function useRef(arg0: boolean) { throw new Error("Function not implemented."); }
+function useRef(arg0: boolean) { throw new Error("Function not implemented."); }

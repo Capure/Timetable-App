@@ -8,9 +8,6 @@
     <div class="open-message-date">Date: {{ messageToDisplay.sent_date }}</div>
     <div v-html="messageToDisplay.content" class="open-message-content"></div>
   </div>
-  <header class="custom-home-header">
-    <span>Timetable</span>
-  </header>
   <div class="container" :style="mainCss">
     <div v-if="!ready" class="loader"></div>
     <div class="messages">
@@ -116,31 +113,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-header {
-  width: 100%;
-  height: 150px;
-  text-align: center;
-  font-size: 45px;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
-  font-weight: 700;
-}
-
-header span {
-  cursor: pointer;
-  user-select: none;
-}
-
-@media (max-width: 512px) {
-  header {
-    font-size: 38px;
-    height: 110px;
-  }
-}
-
 .container {
   width: 100%;
   display: flex;

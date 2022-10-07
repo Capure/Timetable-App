@@ -1,5 +1,5 @@
 <template>
-  <header class="custom-debug-header">Timetable</header>
+  <header v-if="!relayActive" class="custom-debug-header">Timetable</header>
   <div class="layout custom-debug-layout" :style="mainCss">
     <div class="center custom-debug-center">
       <div class="alert custom-debug-alert">WARNING: This is a debug page!</div>
@@ -154,7 +154,7 @@ header {
   box-sizing: border-box;
   border: 2px solid var(--secondary-color);
   color: white;
-  margin-bottom: 20px;
+  margin: 20px 0px;
 }
 
 button {

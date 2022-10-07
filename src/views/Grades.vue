@@ -1,7 +1,4 @@
 <template>
-  <header class="custom-home-header">
-    <span>Timetable</span>
-  </header>
   <div class="container" :style="mainCss">
     <div v-if="!ready" class="loader"></div>
     <template v-for="cat in grades" :key="cat.subject">
@@ -101,32 +98,8 @@ export default defineComponent({
 </script>
 
 <style scoped>
-header {
-  width: 100%;
-  height: 150px;
-  text-align: center;
-  font-size: 45px;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
-  font-weight: 700;
-}
-
-header span {
-  cursor: pointer;
-  user-select: none;
-}
-
-@media (max-width: 512px) {
-  header {
-    font-size: 38px;
-    height: 110px;
-  }
-}
-
 .container {
+  margin-top: 20px;
   width: 100%;
   display: flex;
   flex-direction: column;

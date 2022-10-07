@@ -1,5 +1,6 @@
 <template>
   <ThemeProvider @change="setSettings">
+    <Header v-if="relayActive" />
     <div :style="theme" class="router-body custom-router-body">
       <router-view />
     </div>
@@ -10,12 +11,13 @@
 <script lang="ts">
 import { computed, defineComponent, reactive } from "vue";
 import Footer from "./components/shared/Footer.vue";
+import Header from "./components/shared/Header.vue";
 import ThemeProvider from "./contexts/ThemeProvider.vue";
 import { defaultSettings, Settings } from "./models/settings";
 
 export default defineComponent({
   name: "App",
-  components: { Footer, ThemeProvider },
+  components: { Footer, Header, ThemeProvider },
   setup() {
     const settings = reactive({ ...defaultSettings });
 
@@ -75,7 +77,12 @@ export default defineComponent({
 
     setBodyBackgroundColor();
 
-    return { settings, setSettings, theme };
+    return {
+      settings,
+      setSettings,
+      relayActive: localStorage.getItem("relay-auth") !== null,
+      theme,
+    };
   },
 });
 </script>
