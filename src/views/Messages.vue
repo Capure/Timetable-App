@@ -168,7 +168,6 @@ export default defineComponent({
 
 .message-sender {
   font-size: 18px;
-  margin-top: env(safe-area-inset-top);
   margin: 0px 20px;
   text-transform: capitalize;
   opacity: 0.7;
@@ -195,6 +194,7 @@ export default defineComponent({
 
 .open-message-sender {
   max-width: calc(100% - 20px);
+  margin-top: env(safe-area-inset-top);
 }
 
 .open-message-date {
