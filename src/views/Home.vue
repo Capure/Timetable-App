@@ -46,6 +46,7 @@ header {
   -webkit-box-pack: center;
   justify-content: center;
   font-weight: 700;
+  margin-top: 50px;
 }
 
 header span {

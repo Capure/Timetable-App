@@ -35,7 +35,7 @@ export default defineComponent({
 
 <style scoped>
 .header-spacer {
-  height: 70px;
+  height: 110px;
   width: 100%;
   background: transparent;
 }
@@ -44,13 +44,13 @@ export default defineComponent({
   top: 0;
   left: 0;
   width: 100%;
-  height: 70px;
+  height: 110px;
   background-color: var(--secondary-color);
   z-index: 50;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   box-shadow: 0px 0px 20px 0px var(--main-color);
 }
@@ -59,17 +59,20 @@ export default defineComponent({
   font-size: 2rem;
   color: var(--font-color);
   margin-left: 20px;
+  margin-bottom: 15px;
 }
 
 .header-logo {
   font-size: 2rem;
   font-weight: 700;
   color: var(--font-color);
+  margin-bottom: 15px;
 }
 
 .header-settings {
   font-size: 2rem;
   color: var(--font-color);
   margin-right: 20px;
+  margin-bottom: 15px;
 }
 </style>

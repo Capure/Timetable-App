@@ -9,7 +9,7 @@
       @click="() => router.push('/grades')"
     >
       <ion-icon
-        :style="{...iconCss('/grades')}"
+        :style="{ ...iconCss('/grades') }"
         name="school-outline"
       ></ion-icon>
     </div>
@@ -18,23 +18,24 @@
       @click="() => router.push('/exams')"
     >
       <ion-icon
-        :style="{...iconCss('/exams')}"
+        :style="{ ...iconCss('/exams') }"
         name="clipboard-outline"
       ></ion-icon>
     </div>
     <div
-      :class="`navbar-item navbar-item-home ${path === '/' ? 'navbar-item-active' : ''}`"
-      @click="() => router.push('/')">
-      <ion-icon
-        name="home-outline"
-      ></ion-icon>
+      :class="`navbar-item navbar-item-home ${
+        path === '/' ? 'navbar-item-active' : ''
+      }`"
+      @click="() => router.push('/')"
+    >
+      <ion-icon name="home-outline"></ion-icon>
     </div>
     <div
       :class="`navbar-item ${path === '/messages' ? 'navbar-item-active' : ''}`"
       @click="() => router.push('/messages')"
     >
       <ion-icon
-        :style="{...iconCss('/messages')}"
+        :style="{ ...iconCss('/messages') }"
         name="mail-outline"
       ></ion-icon>
     </div>
@@ -43,7 +44,7 @@
       @click="() => router.push('/lucky')"
     >
       <ion-icon
-        :style="{...iconCss('/lucky')}"
+        :style="{ ...iconCss('/lucky') }"
         name="happy-outline"
       ></ion-icon>
     </div>
@@ -96,9 +97,10 @@ export default defineComponent({
     }));
 
     const iconCss = (iconPath: string) => ({
-      "transition": "color 200ms, opacity 200ms",
-      "color": path.value === iconPath ? "var(--accent-color)" : "var(--font-color)",
-      "opacity": path.value === iconPath ? 1 : 0.8,
+      transition: "color 200ms, opacity 200ms",
+      color:
+        path.value === iconPath ? "var(--accent-color)" : "var(--font-color)",
+      opacity: path.value === iconPath ? 1 : 0.8,
     });
 
     watch(route, (newRoute: RouteLocationNormalized) => {
