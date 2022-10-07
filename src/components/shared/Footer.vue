@@ -4,20 +4,72 @@
     :style="{ ...mainCss, opacity: undefined }"
     class="navbar"
   >
-    <div class="navbar-item" @click="() => router.push('/grades')">
-      <ion-icon name="school-outline"></ion-icon>
+    <div
+      :class="`navbar-item ${path === '/grades' ? 'navbar-item-active' : ''}`"
+      @click="() => router.push('/grades')"
+    >
+      <ion-icon
+        :style="
+          path === '/grades'
+            ? `filter: drop-shadow(0px 0px 2px var(--font-color))`
+            : ''
+        "
+        name="school-outline"
+      ></ion-icon>
     </div>
-    <div class="navbar-item" @click="() => router.push('/exams')">
-      <ion-icon name="clipboard-outline"></ion-icon>
+    <div
+      :class="`navbar-item ${path === '/exams' ? 'navbar-item-active' : ''}`"
+      @click="() => router.push('/exams')"
+    >
+      <ion-icon
+        :style="
+          path === '/exams'
+            ? `filter: drop-shadow(0px 0px 2px var(--font-color))`
+            : ''
+        "
+        name="clipboard-outline"
+      ></ion-icon>
     </div>
-    <div class="navbar-item navbar-item-home" @click="() => router.push('/')">
-      <ion-icon name="home-outline"></ion-icon>
+    <div
+      :class="`navbar-item navbar-item-home ${
+        path === '/' ? 'navbar-item-active' : ''
+      }`"
+      @click="() => router.push('/')"
+    >
+      <ion-icon
+        :style="
+          path === '/'
+            ? `filter: drop-shadow(0px 0px 2px var(--font-color))`
+            : ''
+        "
+        name="home-outline"
+      ></ion-icon>
     </div>
-    <div class="navbar-item" @click="() => router.push('/messages')">
-      <ion-icon name="mail-outline"></ion-icon>
+    <div
+      :class="`navbar-item ${path === '/messages' ? 'navbar-item-active' : ''}`"
+      @click="() => router.push('/messages')"
+    >
+      <ion-icon
+        :style="
+          path === '/messages'
+            ? `filter: drop-shadow(0px 0px 2px var(--font-color))`
+            : ''
+        "
+        name="mail-outline"
+      ></ion-icon>
     </div>
-    <div class="navbar-item" @click="() => router.push('/lucky')">
-      <ion-icon name="happy-outline"></ion-icon>
+    <div
+      :class="`navbar-item ${path === '/lucky' ? 'navbar-item-active' : ''}`"
+      @click="() => router.push('/lucky')"
+    >
+      <ion-icon
+        :style="
+          path === '/lucky'
+            ? `filter: drop-shadow(0px 0px 2px var(--font-color))`
+            : ''
+        "
+        name="happy-outline"
+      ></ion-icon>
     </div>
   </div>
   <div class="main custom-footer-main" :style="mainCss">
@@ -61,6 +113,7 @@ export default defineComponent({
       "--accent-color": settings?.accentColor,
       "--bg-color": settings?.secondaryColor,
       "--font-color": settings?.fontColor,
+      "--navbar-shadow-color": `${settings?.fontColor}10`,
       "--padding": "25px",
       "--gaps": "50px",
       opacity: relayActive.value ? "0" : 1,
@@ -68,7 +121,9 @@ export default defineComponent({
 
     watch(route, (newRoute: RouteLocationNormalized) => {
       path.value = newRoute.path;
+      console.log(path.value);
     });
+
     return { path, router, relayActive, mainCss };
   },
 });
@@ -128,6 +183,7 @@ export default defineComponent({
   text-align: center;
   border-radius: 10px;
   z-index: 50;
+  box-shadow: 0px 0px 20px 0px var(--main-color);
 }
 
 .navbar-item {
@@ -149,6 +205,10 @@ export default defineComponent({
   height: 18vw;
   margin-top: calc(-5px + -0.5vw);
   background-color: var(--accent-color);
+}
+
+.navbar-item-active {
+  box-shadow: 0px 0px 5px 0px var(--main-color);
 }
 
 @media (min-width: 550px) {
