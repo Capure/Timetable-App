@@ -9,11 +9,7 @@
       @click="() => router.push('/grades')"
     >
       <ion-icon
-        :style="
-          path === '/grades'
-            ? `filter: drop-shadow(0px 0px 2px var(--font-color))`
-            : ''
-        "
+        :style="{...iconCss('/grades')}"
         name="school-outline"
       ></ion-icon>
     </div>
@@ -22,21 +18,14 @@
       @click="() => router.push('/exams')"
     >
       <ion-icon
-        :style="
-          path === '/exams'
-            ? `filter: drop-shadow(0px 0px 2px var(--font-color))`
-            : ''
-        "
+        :style="{...iconCss('/exams')}"
         name="clipboard-outline"
       ></ion-icon>
     </div>
-    <div class="navbar-item navbar-item-home" @click="() => router.push('/')">
+    <div
+      :class="`navbar-item navbar-item-home ${path === '/' ? 'navbar-item-active' : ''}`"
+      @click="() => router.push('/')">
       <ion-icon
-        :style="
-          path === '/'
-            ? `filter: drop-shadow(0px 0px 2px var(--font-color))`
-            : ''
-        "
         name="home-outline"
       ></ion-icon>
     </div>
@@ -45,11 +34,7 @@
       @click="() => router.push('/messages')"
     >
       <ion-icon
-        :style="
-          path === '/messages'
-            ? `filter: drop-shadow(0px 0px 2px var(--font-color))`
-            : ''
-        "
+        :style="{...iconCss('/messages')}"
         name="mail-outline"
       ></ion-icon>
     </div>
@@ -58,11 +43,7 @@
       @click="() => router.push('/lucky')"
     >
       <ion-icon
-        :style="
-          path === '/lucky'
-            ? `filter: drop-shadow(0px 0px 2px var(--font-color))`
-            : ''
-        "
+        :style="{...iconCss('/lucky')}"
         name="happy-outline"
       ></ion-icon>
     </div>
@@ -114,12 +95,17 @@ export default defineComponent({
       opacity: relayActive.value ? "0" : 1,
     }));
 
-    watch(route, (newRoute: RouteLocationNormalized) => {
-      path.value = newRoute.path;
-      console.log(path.value);
+    const iconCss = (iconPath: string) => ({
+      "transition": "color 200ms, opacity 200ms",
+      "color": path.value === iconPath ? "var(--accent-color)" : "var(--font-color)",
+      "opacity": path.value === iconPath ? 1 : 0.8,
     });
 
-    return { path, router, relayActive, mainCss };
+    watch(route, (newRoute: RouteLocationNormalized) => {
+      path.value = newRoute.path;
+    });
+
+    return { path, router, relayActive, mainCss, iconCss };
   },
 });
 </script>
@@ -176,7 +162,8 @@ export default defineComponent({
   background-color: var(--bg-color);
   color: var(--font-color);
   text-align: center;
-  border-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   z-index: 50;
   box-shadow: 0px 0px 20px 0px var(--main-color);
 }
@@ -189,7 +176,6 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background: var(--main-color);
   border-radius: 10px;
   font-size: 6vw;
 }
@@ -199,11 +185,13 @@ export default defineComponent({
   width: 18vw;
   height: 18vw;
   margin-top: calc(-5px + -0.5vw);
-  background-color: var(--accent-color);
+  background: var(--bg-color);
+  transition: background 200ms;
+  box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.4);
 }
 
-.navbar-item-active {
-  box-shadow: 0px 0px 5px 0px var(--main-color);
+.navbar-item-home.navbar-item-active {
+  background: var(--accent-color);
 }
 
 @media (min-width: 550px) {
