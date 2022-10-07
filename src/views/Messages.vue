@@ -1,12 +1,14 @@
 <template>
   <div v-if="displayMessage" :style="mainCss" class="open-message">
-    <ion-icon name="close" class="open-message-close" @click="closeMessage" />
-    <div class="open-message-sender">From: {{ messageToDisplay.sender }}</div>
-    <div class="open-message-title">
-      Subject: {{ messageToDisplay.subject }}
+    <div class="open-message-background">
+      <ion-icon name="close" class="open-message-close" @click="closeMessage" />
+      <div class="open-message-sender">From: {{ messageToDisplay.sender }}</div>
+      <div class="open-message-title">
+        Subject: {{ messageToDisplay.subject }}
+      </div>
+      <div class="open-message-date">Date: {{ messageToDisplay.sent_date }}</div>
+      <div v-html="messageToDisplay.content" class="open-message-content"></div>
     </div>
-    <div class="open-message-date">Date: {{ messageToDisplay.sent_date }}</div>
-    <div v-html="messageToDisplay.content" class="open-message-content"></div>
   </div>
   <div class="container" :style="mainCss">
     <div v-if="!ready" class="loader"></div>
@@ -86,9 +88,35 @@ export default defineComponent({
       ready.value = true;
     });
 
+    const linkify = (text: string) => {
+      let replacedText, replacePattern1, replacePattern2, replacePattern3;
+
+      //URLs starting with http://, https://, or ftp://
+      // eslint-disable-next-line
+      replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+      replacedText = text.replace(replacePattern1, `<a href="$1" target="_blank" style="color: ${settings?.accentColor}">$1</a>`);
+
+      //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+      // eslint-disable-next-line
+      replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+      replacedText = replacedText.replace(replacePattern2, `$1<a href="http://$2" target="_blank" style="color: ${settings?.accentColor}">$2</a>`);
+
+      //Change email addresses to mailto:: links.
+      // eslint-disable-next-line
+      replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+      replacedText = replacedText.replace(replacePattern3, `<a href="mailto:$1" style="color: ${settings?.accentColor}">$1</a>`);
+
+      return replacedText;
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const openMessage = (message: any) => {
-      messageToDisplay.value = message;
+      messageToDisplay.value = {
+          sender: message.sender,
+          subject: message.subject,
+          content: linkify(message.content),
+          sent_date: message.sent_date,
+      };
       displayMessage.value = true;
     };
 
@@ -188,12 +216,20 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   z-index: 100;
-  padding: 30px;
+  padding: 15px;
   box-sizing: border-box;
 }
 
+.open-message-background {
+  /* background: var(--background-color);
+  border-radius: 20px; */
+  padding: 15px;
+  height: 100%;
+  background: transparent;
+}
+
 .open-message-sender {
-  max-width: calc(100% - 20px);
+  max-width: calc(100% - 50px);
   margin-top: env(safe-area-inset-top);
 }
 
@@ -212,6 +248,9 @@ export default defineComponent({
   right: 25px;
   top: calc(25px + env(safe-area-inset-top));
   font-size: 30px;
+  background-color: var(--secondary-color);
+  border-radius: 50%;
+  padding: 5px;
 }
 
 .loader {
