@@ -1,12 +1,16 @@
 <template>
   <div v-if="displayMessage" :style="mainCss" class="open-message">
     <div class="open-message-background">
-      <ion-icon name="close" class="open-message-close" @click="closeMessage" />
-      <div class="open-message-sender">From: {{ messageToDisplay.sender }}</div>
-      <div class="open-message-title">
-        Subject: {{ messageToDisplay.subject }}
+      <div class="open-message-info">
+        <ion-icon name="close" class="open-message-close" @click="closeMessage" />
+        <div class="open-message-info-content">
+          <div class="open-message-title">
+            {{ messageToDisplay.subject }}
+          </div>
+          <div class="open-message-sender">{{ messageToDisplay.sender }}</div>
+          <div class="open-message-date">{{ messageToDisplay.sent_date }}</div>
+        </div>
       </div>
-      <div class="open-message-date">Date: {{ messageToDisplay.sent_date }}</div>
       <div v-html="messageToDisplay.content" class="open-message-content"></div>
     </div>
   </div>
@@ -15,11 +19,9 @@
     <div class="messages">
       <template v-for="message in messages" :key="message.id">
         <div @click="() => openMessage(message)" class="message">
-          <div
-            :class="`message-title ${
-              message.read_date ? '' : 'message-title-not-read'
-            }`"
-          >
+          <div :class="`message-title ${
+            message.read_date ? '' : 'message-title-not-read'
+          }`">
             {{ message.subject }}
           </div>
           <div class="message-sender">
@@ -38,6 +40,7 @@
 import { Settings } from "@/models/settings";
 import { computed, defineComponent, inject, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import linkifyHtml from 'linkify-html';
 
 export default defineComponent({
   setup() {
@@ -88,34 +91,29 @@ export default defineComponent({
       ready.value = true;
     });
 
-    const linkify = (text: string) => {
-      let replacedText, replacePattern1, replacePattern2, replacePattern3;
-
-      //URLs starting with http://, https://, or ftp://
-      // eslint-disable-next-line
-      replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
-      replacedText = text.replace(replacePattern1, `<a href="$1" target="_blank" style="color: ${settings?.accentColor}">$1</a>`);
-
-      //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
-      // eslint-disable-next-line
-      replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
-      replacedText = replacedText.replace(replacePattern2, `$1<a href="http://$2" target="_blank" style="color: ${settings?.accentColor}">$2</a>`);
-
-      //Change email addresses to mailto:: links.
-      // eslint-disable-next-line
-      replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
-      replacedText = replacedText.replace(replacePattern3, `<a href="mailto:$1" style="color: ${settings?.accentColor}">$1</a>`);
-
-      return replacedText;
+    const closeMessage = () => {
+      displayMessage.value = false;
+      document.body.style.overflow = "visible";
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const openMessage = (message: any) => {
+      document.body.style.overflow = "hidden";
       messageToDisplay.value = {
-          sender: message.sender,
-          subject: message.subject,
-          content: linkify(message.content),
-          sent_date: message.sent_date,
+        sender: message.sender.replace(' - P - (V LO)', ''),
+        subject: message.subject,
+        content: linkifyHtml(message.content.replaceAll('<p><br></p>', ''), {
+          defaultProtocol: 'https',
+          target: '_blank',
+          validate: {
+            url: (value: string) => value !== 'm.in',
+          },
+          truncate: 40,
+          attributes: {
+            style: `color: ${settings?.accentColor};`,
+          }
+        }),
+        sent_date: message.sent_date,
       };
       displayMessage.value = true;
     };
@@ -130,7 +128,7 @@ export default defineComponent({
       settings,
       messages,
       openMessage,
-      closeMessage: () => (displayMessage.value = false),
+      closeMessage,
       displayMessage,
       messageToDisplay,
       ready,
@@ -221,26 +219,37 @@ export default defineComponent({
 }
 
 .open-message-background {
-  /* background: var(--background-color);
-  border-radius: 20px; */
+  /* background: var(--background-color); */
+  /* border-radius: 20px; */
   padding: 15px;
   height: 100%;
   background: transparent;
 }
 
-.open-message-sender {
-  max-width: calc(100% - 50px);
+.open-message-info {
   margin-top: env(safe-area-inset-top);
+  height: 120px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.open-message-info-content {
+  width: calc(100% - 50px);
+}
+
+.open-message-sender {
+  margin: 10px 0 8px 0;
+  opacity: 0.7;
 }
 
 .open-message-date {
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--font-color);
 }
 
 .open-message-content {
   overflow-y: auto;
-  height: 100%;
+  height: calc(100% - 135px);
+  padding-bottom: 35px;
+  word-wrap: break-word;
 }
 
 .open-message-close {
@@ -266,9 +275,11 @@ export default defineComponent({
   0% {
     opacity: 0;
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
