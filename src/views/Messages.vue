@@ -211,7 +211,7 @@ header span {
   top: 0;
   left: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.67);
   backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
