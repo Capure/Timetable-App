@@ -154,7 +154,7 @@ export default defineComponent({
 
 .navbar {
   width: 100%;
-  height: 100px;
+  height: calc(60px + max(15px, env(safe-area-inset-bottom)));
   display: flex;
   justify-content: space-evenly;
   align-items: flex-start;
