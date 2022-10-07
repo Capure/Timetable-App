@@ -35,7 +35,7 @@ export default defineComponent({
 
 <style scoped>
 .header-spacer {
-  height: 110px;
+  height: calc(70px + env(safe-area-inset-top));
   width: 100%;
   background: transparent;
 }
@@ -44,7 +44,7 @@ export default defineComponent({
   top: 0;
   left: 0;
   width: 100%;
-  height: 110px;
+  height: calc(70px + env(safe-area-inset-top));
   background-color: var(--secondary-color);
   z-index: 50;
   border-bottom-left-radius: 10px;
