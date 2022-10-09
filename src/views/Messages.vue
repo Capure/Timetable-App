@@ -87,6 +87,18 @@ export default defineComponent({
         router.push("/");
         return;
       }
+      if (localStorage.getItem("relay-messages") !== null) {
+        const messagesFromStorage = JSON.parse(
+          localStorage.getItem("relay-messages") || ""
+        );
+        if (
+          new Date().getTime() - messagesFromStorage.lastSync <
+          48 * 3600000
+        ) {
+          messages.value = messagesFromStorage.messages;
+          ready.value = true;
+        }
+      }
       const request = await fetch("https://relay.vlo.software/messages", {
         method: "GET",
         headers: {
@@ -96,7 +108,7 @@ export default defineComponent({
       });
 
       if (request.status !== 200) {
-        alert("Relay not connected!");
+        alert("Relay failed to fetch!");
         router.push("/");
         return;
       }
@@ -109,6 +121,14 @@ export default defineComponent({
           new Date(b.sent_date).getTime() - new Date(a.sent_date).getTime()
         );
       });
+
+      localStorage.setItem(
+        "relay-messages",
+        JSON.stringify({
+          messages: messages.value,
+          lastSync: new Date().getTime(),
+        })
+      );
 
       ready.value = true;
     });
