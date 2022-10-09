@@ -2,7 +2,11 @@
   <div v-if="displayMessage" :style="mainCss" class="open-message">
     <div class="open-message-background">
       <div class="open-message-info">
-        <ion-icon name="close" class="open-message-close" @click="closeMessage" />
+        <ion-icon
+          name="close"
+          class="open-message-close"
+          @click="closeMessage"
+        />
         <div class="open-message-info-content">
           <div class="open-message-title">
             {{ messageToDisplay.subject }}
@@ -15,13 +19,31 @@
     </div>
   </div>
   <div class="container" :style="mainCss">
-    <div v-if="!ready" class="loader"></div>
+    <template v-if="!ready">
+      <div v-for="i in [...Array(3).keys()]" :key="i" class="messages">
+        <div class="message fade-in">
+          <div class="message-sender">
+            <div class="message-sender-name">
+              <div class="message-loading"></div>
+            </div>
+            <div class="message-sender-date">
+              <div style="animation-delay: 100ms" class="message-loading"></div>
+            </div>
+            <div class="message-subject">
+              <div style="animation-delay: 200ms" class="message-loading"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
     <div class="messages">
       <template v-for="message in messages" :key="message.id">
         <div @click="() => openMessage(message)" class="message">
-          <div :class="`message-title ${
-            message.read_date ? '' : 'message-title-not-read'
-          }`">
+          <div
+            :class="`message-title ${
+              message.read_date ? '' : 'message-title-not-read'
+            }`"
+          >
             {{ message.subject }}
           </div>
           <div class="message-sender">
@@ -40,7 +62,7 @@
 import { Settings } from "@/models/settings";
 import { computed, defineComponent, inject, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import linkifyHtml from 'linkify-html';
+import linkifyHtml from "linkify-html";
 
 export default defineComponent({
   setup() {
@@ -100,18 +122,18 @@ export default defineComponent({
     const openMessage = (message: any) => {
       document.body.style.overflow = "hidden";
       messageToDisplay.value = {
-        sender: message.sender.replace(' - P - (V LO)', ''),
+        sender: message.sender.replace(" - P - (V LO)", ""),
         subject: message.subject,
-        content: linkifyHtml(message.content.replaceAll('<p><br></p>', ''), {
-          defaultProtocol: 'https',
-          target: '_blank',
+        content: linkifyHtml(message.content.replaceAll("<p><br></p>", ""), {
+          defaultProtocol: "https",
+          target: "_blank",
           validate: {
-            url: (value: string) => value !== 'm.in',
+            url: (value: string) => value !== "m.in",
           },
           truncate: 40,
           attributes: {
             style: `color: ${settings?.accentColor};`,
-          }
+          },
         }),
         sent_date: message.sent_date,
       };
@@ -122,6 +144,7 @@ export default defineComponent({
       "--background-color": settings?.mainColor,
       "--secondary-color": settings?.secondaryColor,
       "--font-color": settings?.fontColor,
+      "--loader-color": `${settings?.fontColor}44`,
     }));
 
     return {
@@ -262,6 +285,19 @@ export default defineComponent({
   padding: 5px;
 }
 
+.fade-in {
+  animation: fade-in 1.7s ease;
+}
+
+.message-loading {
+  width: 100%;
+  height: 25px;
+  background-color: var(--loader-color);
+  animation: fade 1.5s ease-in-out infinite;
+  border-radius: 5px;
+  margin: 9px 0px;
+}
+
 .loader {
   background-color: var(--font-color);
   height: 40px;
@@ -282,6 +318,16 @@ export default defineComponent({
 
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }
 </style>
