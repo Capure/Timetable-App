@@ -28,9 +28,14 @@ export default defineComponent({
         "--main-color": settings?.mainColor,
         "--secondary-color": settings?.secondaryColor,
         "--font-color": settings?.fontColor,
+        "--font-color-transparent": `${settings?.fontColor}69`,
       };
     });
-    return { router, mainCss, loading: computed(() => settings?.loading) };
+    return {
+      router,
+      mainCss,
+      loading: computed(() => settings?.loading),
+    };
   },
 });
 </script>
@@ -77,10 +82,10 @@ export default defineComponent({
 
 @keyframes glow {
   from {
-    text-shadow: 0px 0px 7px var(--font-color);
+    text-shadow: 0px 0px 7px var(--font-color-transparent);
   }
   to {
-    text-shadow: 0px 0px 12px var(--font-color);
+    text-shadow: 0px 0px 12px var(--font-color-transparent);
   }
 }
 
