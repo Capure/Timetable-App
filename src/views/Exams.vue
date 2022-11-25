@@ -40,6 +40,15 @@ export default defineComponent({
         router.push("/");
         return;
       }
+      if (localStorage.getItem("relay-exams") !== null) {
+        const examsFromStorage = JSON.parse(
+          localStorage.getItem("relay-exams") || ""
+        );
+        if (new Date().getTime() - examsFromStorage.lastSync < 48 * 3600000) {
+          exams.value = examsFromStorage.exams;
+          ready.value = true;
+        }
+      }
       const request = await fetch("https://relay.vlo.software/exams", {
         method: "GET",
         headers: {
@@ -57,9 +66,19 @@ export default defineComponent({
       const data = await request.json();
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      exams.value = data.exams.filter(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (exam: any) => new Date(exam.deadline) > new Date()
+      exams.value = data.exams
+        .filter(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (exam: any) => new Date(exam.deadline) > new Date()
+        )
+        .sort(
+          (a: any, b: any) =>
+            new Date(a.deadline).getTime() - new Date(b.deadline).getTime()
+        );
+
+      localStorage.setItem(
+        "relay-exams",
+        JSON.stringify({ exams: exams.value, lastSync: new Date().getTime() })
       );
 
       ready.value = true;
@@ -100,7 +119,6 @@ export default defineComponent({
 
 .exam {
   width: calc(100% - 40px);
-  height: 130px;
   background-color: var(--secondary-color);
   border-radius: 10px;
   margin: 10px 0;
@@ -127,6 +145,7 @@ export default defineComponent({
 .exam-creator {
   font-size: 18px;
   margin: 0px 20px;
+  margin-bottom: 20px;
   text-transform: capitalize;
   opacity: 0.7;
 }

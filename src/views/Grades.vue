@@ -3,9 +3,7 @@
     <div v-if="!ready" class="loader"></div>
     <template v-for="cat in grades" :key="cat.subject">
       <div class="category">
-        <div class="category-title">
-          {{ cat.subject }}
-        </div>
+        <div class="category-title">{{ cat.subject }} ({{ cat.avg }})</div>
         <div class="grades">
           <div v-for="grade in cat.grades" :key="grade.id" class="grade">
             <div class="grade-value">{{ grade.content }}</div>
@@ -35,7 +33,7 @@ export default defineComponent({
   setup() {
     const settings: Settings | undefined = inject("settings");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const grades = ref([] as { subject: string; grades: any[] }[]);
+    const grades = ref([] as { subject: string; grades: any[]; avg: number }[]);
     const ready = ref(false);
     const router = useRouter();
 
@@ -45,6 +43,15 @@ export default defineComponent({
         alert("Relay not connected!");
         router.push("/");
         return;
+      }
+      if (localStorage.getItem("relay-grades") !== null) {
+        const gradesFromStorage = JSON.parse(
+          localStorage.getItem("relay-grades") || ""
+        );
+        if (new Date().getTime() - gradesFromStorage.lastSync < 48 * 3600000) {
+          grades.value = gradesFromStorage.grades;
+          ready.value = true;
+        }
       }
       const request = await fetch("https://relay.vlo.software/grades", {
         method: "GET",
@@ -76,13 +83,38 @@ export default defineComponent({
       const gradesArray: any = [];
 
       for (const subject in subjects) {
+        const avgData = subjects[subject]
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .map((g: any) => ({
+            weight: parseInt(g.column.weight),
+            grade: parseInt(g.content),
+          }))
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .filter((g: any) => !isNaN(g.grade) && !isNaN(g.weight))
+          .reduce(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (acc: { top: number; bottom: number }, value: any) => ({
+              top: acc.top + value.grade * value.weight,
+              bottom: acc.bottom + value.weight,
+            }),
+            { top: 0, bottom: 0 }
+          );
         gradesArray.push({
           subject,
           grades: subjects[subject],
+          avg: avgData.top / avgData.bottom,
         });
       }
-
       grades.value = gradesArray;
+
+      localStorage.setItem(
+        "relay-grades",
+        JSON.stringify({
+          grades: grades.value,
+          lastSync: new Date().getTime(),
+        })
+      );
+
       ready.value = true;
     });
 
