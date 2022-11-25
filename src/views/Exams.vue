@@ -47,6 +47,9 @@ export default defineComponent({
         if (new Date().getTime() - examsFromStorage.lastSync < 48 * 3600000) {
           exams.value = examsFromStorage.exams;
           ready.value = true;
+          if (settings) {
+            settings.loading = true;
+          }
         }
       }
       const request = await fetch("https://relay.vlo.software/exams", {
@@ -82,6 +85,7 @@ export default defineComponent({
       );
 
       ready.value = true;
+      if (settings) settings.loading = false;
     });
 
     const mainCss = computed(() => ({

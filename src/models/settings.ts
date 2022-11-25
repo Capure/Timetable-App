@@ -8,6 +8,7 @@ export interface Settings {
   wf: "CH" | "DZ";
   lang: "gr1n" | "gr2n" | "gr3n" | "gr4r";
   customCss?: string;
+  loading: boolean;
 }
 
 export const defaultSettings: Settings = {
@@ -19,4 +20,5 @@ export const defaultSettings: Settings = {
   angInf: "gr1",
   wf: "CH",
   lang: "gr4r",
+  loading: false,
 };

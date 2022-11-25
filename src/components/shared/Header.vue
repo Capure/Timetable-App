@@ -4,7 +4,9 @@
     <div @click="() => router.push('/debug')" class="header-avatar">
       <ion-icon name="hammer-outline"></ion-icon>
     </div>
-    <div class="header-logo">Timetable</div>
+    <div :class="`header-logo ${loading ? 'header-logo-animation' : ''}`">
+      Timetable
+    </div>
     <div @click="() => router.push('/settings')" class="header-settings">
       <ion-icon name="settings-outline" />
     </div>
@@ -28,7 +30,7 @@ export default defineComponent({
         "--font-color": settings?.fontColor,
       };
     });
-    return { router, mainCss };
+    return { router, mainCss, loading: computed(() => settings?.loading) };
   },
 });
 </script>
@@ -67,6 +69,19 @@ export default defineComponent({
   font-weight: 700;
   color: var(--font-color);
   margin-bottom: 15px;
+}
+
+.header-logo-animation {
+  animation: glow 0.5s alternate infinite;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0px 0px 7px var(--font-color);
+  }
+  to {
+    text-shadow: 0px 0px 12px var(--font-color);
+  }
 }
 
 .header-settings {

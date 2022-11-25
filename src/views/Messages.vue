@@ -97,6 +97,9 @@ export default defineComponent({
         ) {
           messages.value = messagesFromStorage.messages;
           ready.value = true;
+          if (settings) {
+            settings.loading = true;
+          }
         }
       }
       const request = await fetch("https://relay.vlo.software/messages", {
@@ -131,6 +134,9 @@ export default defineComponent({
       );
 
       ready.value = true;
+      if (settings) {
+        settings.loading = false;
+      }
     });
 
     const closeMessage = () => {

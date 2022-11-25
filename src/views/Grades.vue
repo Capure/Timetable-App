@@ -54,6 +54,9 @@ export default defineComponent({
         if (new Date().getTime() - gradesFromStorage.lastSync < 48 * 3600000) {
           grades.value = gradesFromStorage.grades;
           ready.value = true;
+          if (settings) {
+            settings.loading = true;
+          }
         }
       }
       const request = await fetch("https://relay.vlo.software/grades", {
@@ -119,6 +122,7 @@ export default defineComponent({
       );
 
       ready.value = true;
+      if (settings) settings.loading = false;
     });
 
     const mainCss = computed(() => ({

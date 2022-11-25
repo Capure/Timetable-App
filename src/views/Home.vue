@@ -10,6 +10,7 @@
 </template>
 
 <script lang="ts">
+import { Settings } from "@/models/settings";
 import { defineComponent, inject, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import Minimalistic from "../components/home/minimalistic/index.vue";
@@ -19,13 +20,16 @@ export default defineComponent({
     Minimalistic,
   },
   setup() {
-    const settings = inject("settings");
+    const settings: Settings | undefined = inject("settings");
     const router = useRouter();
     const relayActive = ref(false);
 
     onMounted(() => {
       if (localStorage.getItem("relay-auth")) {
         relayActive.value = true;
+      }
+      if (settings) {
+        settings.loading = false;
       }
     });
 

@@ -21,6 +21,7 @@ export default defineComponent({
         settings.wf = newSettings.wf;
         settings.lang = newSettings.lang;
         settings.customCss = newSettings.customCss;
+        settings.loading = newSettings.loading;
       }
     });
     watch(settings, (newSettings) => {
