@@ -3,7 +3,10 @@
     <div v-if="!ready" class="loader"></div>
     <template v-for="cat in grades" :key="cat.subject">
       <div class="category">
-        <div class="category-title">{{ cat.subject }} ({{ cat.avg }})</div>
+        <div v-if="!isNaN(cat.avg)" class="category-title">
+          {{ cat.subject }} ({{ cat.avg }})
+        </div>
+        <div v-else class="category-title">{{ cat.subject }}</div>
         <div class="grades">
           <div v-for="grade in cat.grades" :key="grade.id" class="grade">
             <div class="grade-value">{{ grade.content }}</div>
@@ -102,7 +105,7 @@ export default defineComponent({
         gradesArray.push({
           subject,
           grades: subjects[subject],
-          avg: avgData.top / avgData.bottom,
+          avg: (avgData.top / avgData.bottom).toFixed(2),
         });
       }
       grades.value = gradesArray;
