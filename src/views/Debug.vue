@@ -78,7 +78,7 @@ export default defineComponent({
         return;
       }
 
-      const response = await fetch(`https://relay.vlo.software/login`, {
+      const response = await fetch(`https://relay.openvulcan.pl/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

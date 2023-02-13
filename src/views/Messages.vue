@@ -102,7 +102,7 @@ export default defineComponent({
           }
         }
       }
-      const request = await fetch("https://relay.vlo.software/messages", {
+      const request = await fetch("https://relay.openvulcan.pl/messages", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

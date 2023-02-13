@@ -27,7 +27,7 @@ export default defineComponent({
         router.push("/");
         return;
       }
-      const request = await fetch("https://relay.vlo.software/luckynumber", {
+      const request = await fetch("https://relay.openvulcan.pl/luckynumber", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
